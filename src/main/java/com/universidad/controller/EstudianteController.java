@@ -26,4 +26,28 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiantes); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<EstudianteDTO> obtenerEstudianteById(@PathVariable Long id) {
+        EstudianteDTO estudiante = estudianteService.obtenerEstudiantePorId(id);
+        return ResponseEntity.ok(estudiante);
+    }
+
+    @PostMapping("/crea-estudiante") // Anotación que indica que este método maneja solicitudes POST
+    public ResponseEntity<EstudianteDTO> crearEstudiante(@RequestBody EstudianteDTO estudianteDTO) { // Método para crear un nuevo estudiante
+        EstudianteDTO nuevoEstudiante = estudianteService.crearEstudiante(estudianteDTO); // Llama al servicio para crear un nuevo estudiante
+        return ResponseEntity.status(201).body(nuevoEstudiante); // Retorna una respuesta HTTP 201 Created con el nuevo estudiante
+    }
+
+    @PutMapping("/actualiza-estudiante/{id}") // Anotación que indica que este método maneja solicitudes PUT
+    public ResponseEntity<EstudianteDTO> actualizarEstudiante(@PathVariable Long id, @RequestBody EstudianteDTO estudianteDTO) { // Método para actualizar un estudiante existente
+        EstudianteDTO estudianteActualizado = estudianteService.actualizarEstudiante(id, estudianteDTO); // Llama al servicio para actualizar el estudiante
+        return ResponseEntity.ok(estudianteActualizado); // Retorna una respuesta HTTP 200 OK con el estudiante actualizado
+    }
+    
+    @DeleteMapping("/elimina-estudiante/{id}") // Anotación que indica que este método maneja solicitudes DELETE
+    public ResponseEntity<Void> eliminarEstudiante(@PathVariable Long id) { // Método para eliminar un estudiante por su ID
+        estudianteService.eliminarEstudiante(id); // Llama al servicio para eliminar el estudiante
+        return ResponseEntity.noContent().build(); // Retorna una respuesta HTTP 204 No Content
+    }
+
 }

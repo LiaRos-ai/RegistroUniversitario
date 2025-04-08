@@ -38,6 +38,44 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
         return estudiantesDTO; // Retorna la lista de EstudianteDTO
     }
 
+    @Override
+    public EstudianteDTO obtenerEstudiantePorId(Long id) {
+        Estudiante estudiante = estudianteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con el ID: " + id));
+        
+        return convertToDTO(estudiante);
+    }
+
+    @Override
+    public EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO) { // Método para crear un nuevo estudiante
+        Estudiante estudiante = convertToEntity(estudianteDTO); // Convierte el EstudianteDTO a Estudiante
+        Estudiante nuevoEstudiante = estudianteRepository.save(estudiante); // Guarda el nuevo estudiante en el repositorio
+        return convertToDTO(nuevoEstudiante); // Retorna el nuevo estudiante como EstudianteDTO
+    }
+
+    @Override
+    public EstudianteDTO actualizarEstudiante(Long id, EstudianteDTO estudianteDTO) { // Método para actualizar un estudiante existente
+        obtenerEstudiantePorId(id); // Verifica si el estudiante existe
+        // Si no existe, lanzará una excepción
+        // Si existe, continúa con la actualización
+
+        Estudiante estudianteActualizado = convertToEntity(estudianteDTO); // Convierte el EstudianteDTO a Estudiante
+        estudianteActualizado.setId(id); // Asigna el ID al estudiante actualizado
+        Estudiante estudianteGuardado = estudianteRepository.update(id, estudianteActualizado); // Actualiza el estudiante en el repositorio
+        
+        return convertToDTO(estudianteGuardado); // Retorna el estudiante actualizado como EstudianteDTO
+    }
+
+    @Override
+    public void eliminarEstudiante(Long id) { // Método para eliminar un estudiante por su ID
+        obtenerEstudiantePorId(id); // Verifica si el estudiante existe
+        // Si no existe, lanzará una excepción
+        // Si existe, continúa con la eliminación
+
+        estudianteRepository.deleteById(id); // Elimina el estudiante del repositorio
+    }
+    // Método para inicializar algunos datos de ejemplo
+
     // Método auxiliar para convertir entidad a DTO
     private EstudianteDTO convertToDTO(Estudiante estudiante) { // Método para convertir un Estudiante a EstudianteDTO
         return EstudianteDTO.builder() // Usa el patrón builder para crear un EstudianteDTO

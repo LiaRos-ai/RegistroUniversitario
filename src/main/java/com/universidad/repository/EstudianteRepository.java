@@ -7,6 +7,7 @@ import java.time.LocalDate; // Importa la clase LocalDate para manejar fechas
 import java.util.ArrayList; // Importa la clase ArrayList para manejar listas
 import java.util.List; // Importa la interfaz List para manejar listas
 import java.util.Map; // Importa la interfaz Map para manejar mapas
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap; // Importa la clase ConcurrentHashMap para manejar mapas concurrentes
 import java.util.concurrent.atomic.AtomicLong; // Importa la clase AtomicLong para manejar contadores atómicos
 
@@ -25,6 +26,19 @@ public class EstudianteRepository {
     
     public List<Estudiante> findAll() { // Método para obtener todos los estudiantes
         return new ArrayList<>(estudiantes.values()); // Retorna una lista de todos los estudiantes en el mapa
+    }
+
+    public Optional<Estudiante> findById(Long id) {
+        return Optional.ofNullable(estudiantes.get(id));
+    }
+
+    public Estudiante update(Long id, Estudiante estudiante) { // Método para actualizar un estudiante por su ID
+        if (estudiantes.containsKey(id)) { // Si el estudiante existe en el mapa
+            estudiante.setId(id); // Asigna el ID al estudiante
+            estudiantes.put(id, estudiante); // Actualiza el estudiante en el mapa
+            return estudiante; // Retorna el estudiante actualizado
+        }
+        return null; // Retorna null si el estudiante no existe
     }
     
     public void deleteById(Long id) { // Método para eliminar un estudiante por su ID
