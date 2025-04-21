@@ -55,6 +55,17 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
     }
 
     @Override
+    public List<EstudianteDTO> obtenerEstudiantesPorCurso(String materia){
+        // Grupo 3
+        List<Estudiante> estudiantes = estudianteRepository.findAll(); // Busca la materia por su nombre
+        return (estudiantes.stream() // Convierte la lista de estudiantes a un stream
+                .filter(estudiante -> estudiante.getMaterias().stream() // Filtra los estudiantes que tienen la materia
+                        .anyMatch(m -> m.getCodigoUnico().equalsIgnoreCase(materia))) // Verifica si la materia está en la lista de materias del estudiante
+                        .map(this::convertToDTO)
+                        .collect(Collectors.toList())); // Recoge los resultados en una lista)
+    }
+
+    @Override
     public EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO) { // Método para crear un nuevo estudiante
         // Convierte el DTO a entidad, guarda el estudiante y lo convierte de nuevo a DTO
         Estudiante estudiante = convertToEntity(estudianteDTO); // Convierte el EstudianteDTO a Estudiante

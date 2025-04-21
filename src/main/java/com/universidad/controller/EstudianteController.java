@@ -72,4 +72,10 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
     }
 
+    @GetMapping("/cursos/{materia}")
+    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantesPorCurso(@PathVariable String materia){
+        List<EstudianteDTO> estudiantesPorCurso = estudianteService.obtenerEstudiantesPorCurso(materia);
+        return ResponseEntity.ok(estudiantesPorCurso);
+    }
+
 }
