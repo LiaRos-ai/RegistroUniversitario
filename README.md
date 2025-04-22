@@ -81,3 +81,12 @@ public ResponseEntity<?> obtenerMateriasDeEstudiante(@PathVariable("id") Long es
             .orElseGet(() -> ResponseEntity.notFound().build());
 }
 Explicación: El controlador maneja la solicitud GET y verifica si el estudiante tiene materias asignadas. Si la lista de materias está vacía, devuelve un mensaje apropiado, y si el estudiante no se encuentra, retorna un error 404.
+
+### Consulta a la API con Postman
+Realizamos la consulta con el metodo GET http://localhost:8090/api/estudiantes/1/materias
+
+![image](https://github.com/user-attachments/assets/5cbb8a51-b8e1-4ccb-8b3e-efeb4e805214)
+
+Ahora en caso de una lista vacia de materias nos devolvera
+
+![image](https://github.com/user-attachments/assets/96b5be3e-879b-4403-b41b-d1f7793c593f)
