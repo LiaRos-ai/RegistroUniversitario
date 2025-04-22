@@ -1,39 +1,40 @@
-# Proyecto CRUD - Universidad
+# 📋 ACTIVIDAD 4 - Optional en Java
 
-Este repositorio contiene la base del proyecto Universitario utilizando **Spring Boot**. Cada grupo debe trabajar en su propia rama según las instrucciones del docente.
+## 🔍 Parte 1: Investigación
 
----
+**1. ¿Qué es Optional en Java? ¿Por qué se recomienda su uso?**  
+R1. Optional es una clase contenedora introducida en Java 8 (java.util.Optional) que representa un valor que puede o no estar presente (puede ser nulo o no nulo).  
+- Expresa intención claramente: Indica explícitamente que un método podría no tener un valor para devolver.  
+- Reduce NullPointerExceptions: Obliga a manejar conscientemente el caso de ausencia de valor.  
+- Proporciona una API más limpia.  
 
-## 🚀 Objetivo
+**2. ¿Cuál es la diferencia entre Optional.empty(), Optional.of(), y Optional.ofNullable()?**  
+R2.  
+- Optional.empty(): Retorna un Optional vacío (sin valor).  
+- Optional.of(valor): Crea un Optional con un valor no nulo. Si el valor es null, lanza NullPointerException.  
+- Optional.ofNullable(valor): Crea un Optional que acepta valores nulos. Si el valor es null, retorna un Optional vacío.  
 
-Completar las operaciones requeridas sobre el Proyecto.
+**3. ¿Qué ventajas tiene Optional frente a regresar null?**  
+R3. Las ventajas son las siguientes:  
+- Optional indica explícitamente que un valor puede estar ausente.  
+- Devolver null no comunica explícitamente que un método puede no tener un resultado válido.  
+- Con Optional, se obliga al desarrollador a manejar explícitamente el caso en el que no hay valor.  
+- Con null, si no se verifica, puede provocar una NullPointerException.  
+- Optional permite usar métodos como .map(), .filter(), .flatMap(), etc.  
+- Optional está diseñado para integrarse bien con la API de Streams de Java.  
+- El tipo de retorno Optional<T> documenta automáticamente que el método puede no devolver un valor.  
+- En Spring Data JPA, los métodos de repositorio pueden retornar Optional para manejar casos donde no se encuentra una entidad.  
 
----
+**4. ¿Cómo se integra Optional en Spring Data JPA?**  
+R4. En Spring Data JPA, Optional se utiliza para manejar de manera segura los casos en los que una consulta no retorna resultados, evitando errores como el NullPointerException. Métodos como findById() devuelven un Optional<T>, lo que permite verificar si un valor está presente utilizando métodos como isPresent(), ifPresent(), o orElse().  
 
-## 👥 Grupos y ramas asignadas
+**5. ¿Qué método de Optional permite lanzar una excepción si no hay resultado?**  
+R5. orElseThrow(): Lanza una excepción si el Optional está vacío.  
 
-| Grupo | Rama asignada       | Integrantes                     |
-|-------|---------------------|----------------------------------|
-| 01    | `grupo-01-springb`  | [Enrique Rafael Fernandez Chiri, Nohemy Ruth Mamani Apaza, Samantha Rousse Gironda Mina, Josué Misael López Huanca, Luz Belen Chavez Patzi, Oscar Joel Choque Flores, Cristhian Pablo Alvarez Guarachi]               |
-| 02    | `grupo-02-springb`     | [Maya Cadiz,Leandro Chavez,Masiel Chirinos, Sergio Luque, Jordy Miranda, Saul Sanchez, Elizabeth Suzaño]               |
-| 03    | `grupo-03-springb`     | [Bautista Mollo Denzel Guden, Copa Quispe Esther Sara, Guarachi Arguata Alberth, Reyes Barja Carlos Eduardo, Rojas Condoria Fidel Angel, Tancara Suñagua Joel Hernan.]               |
-| 04    | `grupo-04-springb`     | [Marcelo Alejandro Villarroel Gutierrez, Jonathan Gerson Gutierrez Condori, Betzabe Gutierrez Morales, Mikaela Belen Cordova Vasquez, Jhessica Coral Villca Palma,Karen Rocio Catari Calderon, Abigail Blanca Mamani Mamani,Luz Edely Aruquipa Ururi]               |
-| 05    | `grupo-05-springb`     | ["Diana Cecilia Flores Chacon, Juan sebastian camacho fernandez, Andres wiliam galarza salguero, Harold Ruddy Quispe Hilari, Jose alejandro diaz ali, Michelle Ruth Poma Ramos, Daron Augusto Baldiviezo Aillon"]               |
-| 06    | `grupo-06-springb`     | [José Aruquipa, Miguel Calderon, Herlan Callisaya, Oscar Lujan, Edith Marca, Luz Tinta, Daniel Zeballos]               |
-| 07    | `grupo-07-springb`     | [Lenz Abad Alanoca Ojeda,Juan Vidal Mamani Riveros,Herlan Choque Flores,Lorgio Emilio Chura Carrillo,Jesus Alejandro Cruz,Juan Carlos Limachi Maydana]               |
-| 08    | `grupo-08-springb`     | [Amilcar Josias Yujra Chipana, Luis Alfredo Quispe Ortiz, Alan Sergio Yupanqui Corini, Yehonatan Oscar Limachi Corina, Melany Abril Mamani Chamizo, Limbert Mamani Quiñajo, Ronald Choque Sillo, José Alejandro Fernandez Sanchez]               |
-| 09    | `grupo-09-springb`     | [Bautista Coaquira Jose Abraham, Laura Rios Lizbeth Fabiola, Penelope Gema Copana Fuentes, Sasha Johannes konrad Arana Ramirez, Callisaya Vargas Marco Ronaldo, Callisaya Lanes Shelly Anahi, Choque Gutierrez Manuel Alejandro, Elías Daniel Beltrán Selaez]               |
-| 10    | `grupo-10-springb`     | [María Teresa Aspiazu Sánchez,Jesus Abed Herrera Sirpa,Joel Alejandro Pérez Murillo,Ariadne Checcid Quiroz Coila,Brandom Jhoseff Amezaga GarridoCael Mathew Cuevas Alconini,Jose Alfredo Choque Choque]               |
-| 11    | `grupo-11-springb`     | [Israel Andres Quenta Pomacusi, Edson Javier Mamani Ticona,Jhamil Elias Mamani Colque,Alexander Nataniel Castillo Centellas,Adrian Marcelo Requena Oros,Maritza Zarate Paco,Amiel Natanieli Mendez Vargas,Adriana Valeria Fernandez Flores,Jhoel Alexander Chipana Paye]|               |
-| 12    | `grupo-12-springb`     | [Victor Bernardo Quispe Rojas,Gabriel Omar Cumara Patty,Cristian William Bautista Villcacuti,Rosa Katerine Gonzales Choque,Alvin Angel Magne Aruquipa,Blanca Nataly Chipana Orellana,Ronald Mendoza Caspa,Jose Julian Quinteros Mollinedo]|
-| 13    | `grupo-13-springb`     | [Quispe Adriana, Carvajal Ester, Tirado Nayheli, Canaviri Carlos, Mamani Iver, Loza Humberto, Mamani Sarahi, Ticona Alex]|
-| 14    | `grupo-14-springb`     | [Gutierrez Challapa Daniel Rodrigo, Hidalgo Colque Ariana Daniela,Huanca Tito Jose Manuel,Mamani Mamani Mirko Sony,Quecaño Uruña Erika,Quiñajo Berrios Melina Viana]|
-| 15   | `grupo-15-springb`     | [Julio Picavia Saravia, Carlos Callisaya Rosas]|
----
-
-
-## 📦 Cómo trabajar en tu rama
-
-1. Clona el repositorio:
-```bash
-git clone https://github.com/LiaRos-ai/RegistroUniversitario.git
+**6. ¿Por qué es útil Optional en el contexto de una API REST?**  
+R6. Optional es útil en una API REST porque permite manejar de forma clara, segura y elegante la ausencia de datos.  
+- Expresa de forma clara la posible ausencia de datos.  
+- Evita el uso de null y reduce errores como NullPointerException.  
+- Facilita el manejo de respuestas como 404 Not Found.  
+- Mejora la legibilidad y documentación del código.  
+- Permite un flujo de manejo funcional y seguro de los datos.  
