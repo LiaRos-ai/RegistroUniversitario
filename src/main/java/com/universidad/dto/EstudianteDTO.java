@@ -18,5 +18,13 @@ public class EstudianteDTO {
     private String email;
     private LocalDate fechaNacimiento;
     private String numeroInscripcion;
+    private String estado;
+    private String usuarioAlta;
+    private String usuarioModificacion;
+    private LocalDate fechaAlta;
+    private LocalDate fechaModificacion;
+    private String usuarioBaja;
+    private LocalDate fechaBaja;
+    private String motivoBaja;
     
 }
