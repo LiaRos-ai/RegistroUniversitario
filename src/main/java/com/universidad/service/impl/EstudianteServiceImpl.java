@@ -1,6 +1,7 @@
 package com.universidad.service.impl; // Define el paquete al que pertenece esta clase
 
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
+import com.universidad.dto.MateriaDTO;
 import com.universidad.model.Estudiante; // Importa la clase Estudiante del paquete model
 import com.universidad.model.Materia;
 import com.universidad.repository.EstudianteRepository; // Importa la clase EstudianteRepository del paquete repository
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service; // Importa la anotación Service 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List; // Importa la interfaz List para manejar listas
+import java.util.Optional;
 import java.util.stream.Collectors; // Importa la clase Collectors para manejar colecciones
 
 @Service // Anotación que indica que esta clase es un servicio de Spring
@@ -43,15 +45,6 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
                 .filter(estudiante -> "activo".equalsIgnoreCase(estudiante.getEstado())) // Filtra los estudiantes activos
                 .map(this::convertToDTO) // Convierte cada Estudiante a EstudianteDTO
                 .collect(Collectors.toList()); // Recoge los resultados en una lista
-    }
-
-
-    @Override
-    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId) { // Método para obtener las materias de un estudiante por su ID
-        // Busca el estudiante por su ID y obtiene sus materias
-        Estudiante estudiante = estudianteRepository.findById(estudianteId)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-        return estudiante.getMaterias();
     }
 
     @Override
@@ -92,6 +85,20 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
         return convertToDTO(estudianteInactivo); // Convierte el Estudiante inactivo a EstudianteDTO y lo retorna
     }
 
+    @Override
+    public List<MateriaDTO> obtenerMateriasPorEstudiante(Long idEstudiante) {
+        Estudiante estudiante = estudianteRepository.findById(idEstudiante)
+                .orElseThrow(() -> new RuntimeException("No se encontró al estudiante con ID " + idEstudiante));
+
+        List<Materia> materias = Optional.ofNullable(estudiante.getMaterias()) // Uso del Optional.ofNullable()
+                .filter(lista -> !lista.isEmpty()) // Uso del Optional.isEmpty()
+                .orElseThrow(() -> new RuntimeException("El estudiante no está inscrito a ninguna materia"));
+
+        return materias.stream()
+                .map(this::convertirAMateriaDTO)
+                .collect(Collectors.toList());
+    }
+
     // Método auxiliar para convertir entidad a DTO
     private EstudianteDTO convertToDTO(Estudiante estudiante) { // Método para convertir un Estudiante a EstudianteDTO
         return EstudianteDTO.builder() // Usa el patrón builder para crear un EstudianteDTO
@@ -130,4 +137,15 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
                 .motivoBaja(estudianteDTO.getMotivoBaja()) // Asigna el motivo de baja (puede ser null si no se desea mostrar)
                 .build(); // Construye el objeto Estudiante
     }
+
+    // Método auxiliar para convertir entidad a DTO
+    private MateriaDTO convertirAMateriaDTO(Materia materia) {
+        return MateriaDTO.builder()
+                .id(materia.getId())
+                .nombreMateria(materia.getNombreMateria())
+                .codigoUnico(materia.getCodigoUnico())
+                .creditos(materia.getCreditos())
+                .build();
+    }
+
 }

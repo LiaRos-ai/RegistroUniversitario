@@ -1,6 +1,7 @@
 package com.universidad.controller; // Define el paquete al que pertenece esta clase
 
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
+import com.universidad.dto.MateriaDTO; // Importa la clase EstudianteDTO del paquete dto
 import com.universidad.model.Materia;
 import com.universidad.service.IEstudianteService; // Importa la interfaz IEstudianteService del paquete service
 
@@ -36,12 +37,6 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiante); // Retorna una respuesta HTTP 200 OK con el estudiante encontrado
     }
 
-    @GetMapping("/{id}/materias")
-    public ResponseEntity<List<Materia>> obtenerMateriasDeEstudiante(@PathVariable("id") Long estudianteId) {
-        List<Materia> materias = estudianteService.obtenerMateriasDeEstudiante(estudianteId);
-        return ResponseEntity.ok(materias);
-    }
-
     @PostMapping // Anotación que indica que este método maneja solicitudes POST
     @Transactional // Anotación que indica que este método debe ejecutarse dentro de una transacción
     @ResponseStatus(HttpStatus.CREATED) // Anotación que indica que la respuesta HTTP debe tener un estado 201 Created
@@ -72,4 +67,9 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
     }
 
+    @GetMapping("/{id}/materias")
+    public ResponseEntity<List<MateriaDTO>> obtenerMateriasPorEstudiante(@PathVariable Long id) {
+        List<MateriaDTO> materias = estudianteService.obtenerMateriasPorEstudiante(id);
+        return ResponseEntity.ok(materias);
+    }
 }
