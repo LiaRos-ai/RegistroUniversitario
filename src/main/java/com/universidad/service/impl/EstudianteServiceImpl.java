@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List; // Importa la interfaz List para manejar listas
 import java.util.stream.Collectors; // Importa la clase Collectors para manejar colecciones
+import java.util.Optional;
 
 @Service // Anotación que indica que esta clase es un servicio de Spring
 public class EstudianteServiceImpl implements IEstudianteService { // Define la clase EstudianteServiceImpl que implementa la interfaz IEstudianteService
@@ -47,11 +48,13 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
 
 
     @Override
-    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId) { // Método para obtener las materias de un estudiante por su ID
-        // Busca el estudiante por su ID y obtiene sus materias
-        Estudiante estudiante = estudianteRepository.findById(estudianteId)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-        return estudiante.getMaterias();
+    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId) {
+        Optional<Estudiante> estudianteOptional = estudianteRepository.findById(estudianteId);
+        if (estudianteOptional.isPresent() && estudianteOptional.get().getMaterias() != null) {
+            return estudianteOptional.get().getMaterias();
+        }
+        // Si no tiene materias, se puede devolver una lista vacía o un Optional.empty() como quieras
+        return List.of(); // No hay materias
     }
 
     @Override

@@ -33,7 +33,7 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      * @param estudianteId ID del estudiante.
      * @return Lista de materias del estudiante.
      */
-    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId); // Método para obtener las materias de un estudiante por su ID
+    List<Materia> obtenerMateriasDeEstudiante(Long estudianteId); // Método para obtener materias de un estudiante
 
     
     /**

@@ -36,12 +36,6 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiante); // Retorna una respuesta HTTP 200 OK con el estudiante encontrado
     }
 
-    @GetMapping("/{id}/materias")
-    public ResponseEntity<List<Materia>> obtenerMateriasDeEstudiante(@PathVariable("id") Long estudianteId) {
-        List<Materia> materias = estudianteService.obtenerMateriasDeEstudiante(estudianteId);
-        return ResponseEntity.ok(materias);
-    }
-
     @PostMapping // Anotación que indica que este método maneja solicitudes POST
     @Transactional // Anotación que indica que este método debe ejecutarse dentro de una transacción
     @ResponseStatus(HttpStatus.CREATED) // Anotación que indica que la respuesta HTTP debe tener un estado 201 Created
@@ -70,6 +64,15 @@ public class EstudianteController { // Define la clase EstudianteController
     public ResponseEntity<List<EstudianteDTO>> obtenerEstudianteActivo() { // Método para obtener una lista de estudiantes activos
         List<EstudianteDTO> estudiantesActivos = estudianteService.obtenerEstudianteActivo(); // Llama al servicio para obtener los estudiantes activos
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
+    }
+
+    @GetMapping("/{id}/materias")
+    public ResponseEntity<?> obtenerMateriasDeEstudiante(@PathVariable("id") Long estudianteId) {
+        List<Materia> materias = estudianteService.obtenerMateriasDeEstudiante(estudianteId);
+        if (materias.isEmpty()) {
+            return ResponseEntity.ok("El estudiante no está inscrito a ninguna materia");
+        }
+        return ResponseEntity.ok(materias);
     }
 
 }
