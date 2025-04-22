@@ -130,4 +130,16 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
                 .motivoBaja(estudianteDTO.getMotivoBaja()) // Asigna el motivo de baja (puede ser null si no se desea mostrar)
                 .build(); // Construye el objeto Estudiante
     }
+
+
+    @Override
+    public Optional<Estudiante> obtenerEstudiantePorId(Long id) {
+        return estudianteRepository.findById(id);
+    }
+
+    @Override
+    public Optional<List<Materia>> obtenerMateriasPorEstudiante(Long id) {
+        Optional<Estudiante> estudiante = estudianteRepository.findById(id);
+        return estudiante.map(Estudiante::getMaterias); // Si el estudiante existe, devuelve sus materias
+    }
 }

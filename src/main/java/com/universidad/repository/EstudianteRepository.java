@@ -14,6 +14,7 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
     // Método para encontrar un estudiante por su estado
     Estudiante findByEstado(String estado); // Método para encontrar un estudiante por su estado
 
-
+    // Método para obtener un estudiante por ID
+    Optional<Estudiante> findById(Long id);
 
 }

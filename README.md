@@ -1,39 +1,86 @@
-# Proyecto CRUD - Universidad
+# Optional en Java - Guía Rápida  
 
-Este repositorio contiene la base del proyecto Universitario utilizando **Spring Boot**. Cada grupo debe trabajar en su propia rama según las instrucciones del docente.
+## 📌 ¿Qué es Optional?  
+Clase contenedora (`java.util.Optional`) introducida en Java 8 para representar un valor que puede ser `null`. Su objetivo es evitar `NullPointerException` y manejar casos nulos de forma explícita.  
 
----
+## 🎯 ¿Por qué usarlo?  
+- **Expresa claridad**: Indica que un valor puede estar ausente.  
+- **Evita `null`**: Reduce errores como `NullPointerException`.  
+- **API fluida**: Permite operaciones encadenadas (`map`, `filter`, etc.).  
 
-## 🚀 Objetivo
+## 🛠️¿Cuál es la diferencia entre Optional.empty(), Optional.of(), y Optional.ofNullable()?  
+| Método                | Descripción                                                                 | Ejemplo                                  |  
+|-----------------------|-----------------------------------------------------------------------------|------------------------------------------|  
+| `Optional.empty()`    | Retorna un `Optional` vacío.                                               | `Optional.empty()`                       |  
+| `Optional.of(valor)`  | Crea un `Optional` con un valor **no nulo** (error si es `null`).          | `Optional.of("Hola")`                    |  
+| `Optional.ofNullable(valor)` | Crea un `Optional` que acepta `null`.                              | `Optional.ofNullable(null)`              |  
+| `orElse(default)`     | Retorna el valor o un predeterminado.                                      | `opt.orElse("default")`                  |  
+| `orElseThrow()`       | Lanza una excepción si no hay valor.                                       | `opt.orElseThrow(() -> new Exception())` |  
+| `isPresent()`         | Verifica si hay valor.                                                     | `if (opt.isPresent()) { ... }`           |  
 
-Completar las operaciones requeridas sobre el Proyecto.
+## ✅ ¿Qué ventajas tiene Optional frente a regresar `null`? 
+- **Código más seguro**: Evita checks `if (obj != null)`.  
+- **Legibilidad**: Métodos como `orElse()` hacen el código más declarativo.  
 
----
+## 🔄 ¿Cómo se integra Optional en Spring Data JPA?	  
+Los repositorios pueden retornar `Optional` en consultas:  
+```java
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+}
+```
+## 🔄 ¿Qué método de Optional permite lanzar una excepción si no hay resultado?	  
+El método `orElseThrow()` de `Optional` permite lanzar una excepción si el valor no está presente. Por ejemplo:
+```java
+Usuario usuario = usuarioRepository.findById(id)
+                      .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+```
+## 🔄¿Por qué es útil Optional en el contexto de una API REST?
+En una API REST, `Optional` permite manejar respuestas en las que un recurso puede no estar presente sin depender de `null`. Se puede utilizar en servicios para evitar respuestas inesperadas y mejorar la robustez de la API.
 
-## 👥 Grupos y ramas asignadas
+# Base de Datos: Relación Estudiantes-Materias
 
-| Grupo | Rama asignada       | Integrantes                     |
-|-------|---------------------|----------------------------------|
-| 01    | `grupo-01-springb`  | [Enrique Rafael Fernandez Chiri, Nohemy Ruth Mamani Apaza, Samantha Rousse Gironda Mina, Josué Misael López Huanca, Luz Belen Chavez Patzi, Oscar Joel Choque Flores, Cristhian Pablo Alvarez Guarachi]               |
-| 02    | `grupo-02-springb`     | [Maya Cadiz,Leandro Chavez,Masiel Chirinos, Sergio Luque, Jordy Miranda, Saul Sanchez, Elizabeth Suzaño]               |
-| 03    | `grupo-03-springb`     | [Bautista Mollo Denzel Guden, Copa Quispe Esther Sara, Guarachi Arguata Alberth, Reyes Barja Carlos Eduardo, Rojas Condoria Fidel Angel, Tancara Suñagua Joel Hernan.]               |
-| 04    | `grupo-04-springb`     | [Marcelo Alejandro Villarroel Gutierrez, Jonathan Gerson Gutierrez Condori, Betzabe Gutierrez Morales, Mikaela Belen Cordova Vasquez, Jhessica Coral Villca Palma,Karen Rocio Catari Calderon, Abigail Blanca Mamani Mamani,Luz Edely Aruquipa Ururi]               |
-| 05    | `grupo-05-springb`     | ["Diana Cecilia Flores Chacon, Juan sebastian camacho fernandez, Andres wiliam galarza salguero, Harold Ruddy Quispe Hilari, Jose alejandro diaz ali, Michelle Ruth Poma Ramos, Daron Augusto Baldiviezo Aillon"]               |
-| 06    | `grupo-06-springb`     | [José Aruquipa, Miguel Calderon, Herlan Callisaya, Oscar Lujan, Edith Marca, Luz Tinta, Daniel Zeballos]               |
-| 07    | `grupo-07-springb`     | [Lenz Abad Alanoca Ojeda,Juan Vidal Mamani Riveros,Herlan Choque Flores,Lorgio Emilio Chura Carrillo,Jesus Alejandro Cruz,Juan Carlos Limachi Maydana]               |
-| 08    | `grupo-08-springb`     | [Amilcar Josias Yujra Chipana, Luis Alfredo Quispe Ortiz, Alan Sergio Yupanqui Corini, Yehonatan Oscar Limachi Corina, Melany Abril Mamani Chamizo, Limbert Mamani Quiñajo, Ronald Choque Sillo, José Alejandro Fernandez Sanchez]               |
-| 09    | `grupo-09-springb`     | [Bautista Coaquira Jose Abraham, Laura Rios Lizbeth Fabiola, Penelope Gema Copana Fuentes, Sasha Johannes konrad Arana Ramirez, Callisaya Vargas Marco Ronaldo, Callisaya Lanes Shelly Anahi, Choque Gutierrez Manuel Alejandro, Elías Daniel Beltrán Selaez]               |
-| 10    | `grupo-10-springb`     | [María Teresa Aspiazu Sánchez,Jesus Abed Herrera Sirpa,Joel Alejandro Pérez Murillo,Ariadne Checcid Quiroz Coila,Brandom Jhoseff Amezaga GarridoCael Mathew Cuevas Alconini,Jose Alfredo Choque Choque]               |
-| 11    | `grupo-11-springb`     | [Israel Andres Quenta Pomacusi, Edson Javier Mamani Ticona,Jhamil Elias Mamani Colque,Alexander Nataniel Castillo Centellas,Adrian Marcelo Requena Oros,Maritza Zarate Paco,Amiel Natanieli Mendez Vargas,Adriana Valeria Fernandez Flores,Jhoel Alexander Chipana Paye]|               |
-| 12    | `grupo-12-springb`     | [Victor Bernardo Quispe Rojas,Gabriel Omar Cumara Patty,Cristian William Bautista Villcacuti,Rosa Katerine Gonzales Choque,Alvin Angel Magne Aruquipa,Blanca Nataly Chipana Orellana,Ronald Mendoza Caspa,Jose Julian Quinteros Mollinedo]|
-| 13    | `grupo-13-springb`     | [Quispe Adriana, Carvajal Ester, Tirado Nayheli, Canaviri Carlos, Mamani Iver, Loza Humberto, Mamani Sarahi, Ticona Alex]|
-| 14    | `grupo-14-springb`     | [Gutierrez Challapa Daniel Rodrigo, Hidalgo Colque Ariana Daniela,Huanca Tito Jose Manuel,Mamani Mamani Mirko Sony,Quecaño Uruña Erika,Quiñajo Berrios Melina Viana]|
-| 15   | `grupo-15-springb`     | [Julio Picavia Saravia, Carlos Callisaya Rosas]|
----
+## Tabla `estudiante_materia`
 
+Tabla de relación muchos-a-muchos que registra las materias en las que está inscrito cada estudiante.
 
-## 📦 Cómo trabajar en tu rama
+### Estructura SQL
+```sql
+CREATE TABLE estudiante_materia (
+    id_estudiante BIGINT NOT NULL,
+    id_materia BIGINT NOT NULL,
+    PRIMARY KEY (id_estudiante, id_materia),
+    FOREIGN KEY (id_estudiante) REFERENCES persona(id_persona),
+    FOREIGN KEY (id_materia) REFERENCES materias(id_materia)
+);
+```
 
-1. Clona el repositorio:
-```bash
-git clone https://github.com/LiaRos-ai/RegistroUniversitario.git
+### Insercion datos ejemplo
+```sql
+INSERT INTO estudiante_materia (id_estudiante, id_materia) VALUES
+(1, 1), -- Estudiante 1 inscrito en Álgebra
+(1, 3), -- Estudiante 1 inscrito en Química Orgánica
+(2, 2), -- Estudiante 2 inscrito en Física General
+(3, 5), -- Estudiante 3 inscrito en Programación Avanzada
+(4, 4), -- Estudiante 4 inscrito en Inglés Técnico
+(4, 2); -- Estudiante 4 también inscrito en Física General
+```
+### Tabla materias
+Esta tabla almacena información sobre las materias disponibles.
+Datos de ejemplo para materias:
+
+```sql
+INSERT INTO estudiante_materia (id_estudiante, id_materia) VALUES
+INSERT INTO materias (codigo_unico, creditos, nombre_materia) VALUES
+('MAT101', 3, 'Álgebra'),
+('PHY202', 4, 'Física General'),
+('CHE303', 4, 'Química Orgánica'),
+('ENG104', 2, 'Inglés Técnico'),
+('CS505', 5, 'Programación Avanzada');
+```
+
+### Diagrama de relaciones
+
+```
+persona (1) → (n) estudiante_materia (n) ← (1) materias
+```

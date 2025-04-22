@@ -72,4 +72,19 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
     }
 
+    @GetMapping("/obtenerMaterias/{id}")
+    public ResponseEntity<?> obtenerMateriasPorEstudiante(@PathVariable Long id) {
+        Optional<List<Materia>> materias = estudianteService.obtenerMateriasPorEstudiante(id);
+        
+        // Verificar si la lista está presente y no está vacía
+        if (materias.isPresent() && materias.get().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("El estudiante no está inscrito en ninguna materia");
+        }
+
+        // Si hay materias, devolverlas
+        return materias.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
