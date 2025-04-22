@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List; // Importa la interfaz List para manejar listas
 import java.util.stream.Collectors; // Importa la clase Collectors para manejar colecciones
-
+import java.util.Optional;
 @Service // Anotación que indica que esta clase es un servicio de Spring
 public class EstudianteServiceImpl implements IEstudianteService { // Define la clase EstudianteServiceImpl que implementa la interfaz IEstudianteService
 
@@ -46,12 +46,11 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
     }
 
 
+    // GRUPO 13 IMPLEMENTACION DEL OPTIONAL
     @Override
-    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId) { // Método para obtener las materias de un estudiante por su ID
-        // Busca el estudiante por su ID y obtiene sus materias
-        Estudiante estudiante = estudianteRepository.findById(estudianteId)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-        return estudiante.getMaterias();
+    public Optional<List<Materia>> obtenerMateriasDeEstudiante(Long estudianteId) {
+        return estudianteRepository.findById(estudianteId)
+                .map(Estudiante::getMaterias);
     }
 
     @Override

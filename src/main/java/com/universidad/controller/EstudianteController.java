@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus; // Importa la clase HttpStatus de Sp
 import org.springframework.web.bind.annotation.*; // Importa las anotaciones de Spring para controladores web
 
 import java.util.List; // Importa la interfaz List para manejar listas
+// IMPORTAR OPTIONAL:
+import java.util.List;
+import java.util.Optional;
 
 @RestController // Anotación que indica que esta clase es un controlador REST de Spring
 @RequestMapping("/api/estudiantes") // Define la ruta base para las solicitudes HTTP a este controlador
@@ -36,10 +39,23 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiante); // Retorna una respuesta HTTP 200 OK con el estudiante encontrado
     }
 
+    // GRUPO 13 IMPLEMENTACION DEL OPTIONAL
     @GetMapping("/{id}/materias")
-    public ResponseEntity<List<Materia>> obtenerMateriasDeEstudiante(@PathVariable("id") Long estudianteId) {
-        List<Materia> materias = estudianteService.obtenerMateriasDeEstudiante(estudianteId);
-        return ResponseEntity.ok(materias);
+    public ResponseEntity<?> obtenerMateriasDeEstudiante(@PathVariable("id") Long estudianteId) {
+        Optional<List<Materia>> materiasOptional = estudianteService.obtenerMateriasDeEstudiante(estudianteId);
+
+        if (materiasOptional.isPresent()) {
+            List<Materia> materias = materiasOptional.get();
+            if (!materias.isEmpty()) {
+                return ResponseEntity.ok(materias);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("El estudiante no está inscrito en ninguna materia.");//
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontró el estudiante con ID: " + estudianteId);
+        }
     }
 
     @PostMapping // Anotación que indica que este método maneja solicitudes POST
