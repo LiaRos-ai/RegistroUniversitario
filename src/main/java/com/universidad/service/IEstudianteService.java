@@ -1,9 +1,11 @@
 package com.universidad.service; // Define el paquete al que pertenece esta interfaz
 
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
+import com.universidad.dto.MateriaDTO;
 import com.universidad.model.Materia;
 
 import java.util.List; // Importa la interfaz List para manejar listas
+import java.util.Optional;
 
 public interface IEstudianteService { // Define la interfaz IEstudianteService
     
@@ -33,7 +35,7 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      * @param estudianteId ID del estudiante.
      * @return Lista de materias del estudiante.
      */
-    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId); // Método para obtener las materias de un estudiante por su ID
+    //public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId); // Método para obtener las materias de un estudiante por su ID
 
     
     /**
@@ -58,4 +60,11 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      * @param id ID del estudiante a eliminar.
      */
     EstudianteDTO eliminarEstudiante(Long id, EstudianteDTO estudianteDTO); // Método para eliminar (de manera logica) un estudiante por su ID
+
+    List<Materia> obtenerMateriasDeEstudiante(Long estudianteId);
+    Optional<List<Materia>> obtenerMateriasDeEstudianteOptional(Long estudianteId);
+
+
+
+
 }

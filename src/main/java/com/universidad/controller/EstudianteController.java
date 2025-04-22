@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus; // Importa la clase HttpStatus de Sp
 import org.springframework.web.bind.annotation.*; // Importa las anotaciones de Spring para controladores web
 
 import java.util.List; // Importa la interfaz List para manejar listas
+import java.util.Optional;
 
 @RestController // Anotación que indica que esta clase es un controlador REST de Spring
 @RequestMapping("/api/estudiantes") // Define la ruta base para las solicitudes HTTP a este controlador
@@ -71,5 +72,18 @@ public class EstudianteController { // Define la clase EstudianteController
         List<EstudianteDTO> estudiantesActivos = estudianteService.obtenerEstudianteActivo(); // Llama al servicio para obtener los estudiantes activos
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
     }
+
+    @GetMapping("/{id}/materias-optional")
+    public ResponseEntity<?> obtenerMateriasDeEstudianteOptional(@PathVariable Long id) {
+        Optional<List<Materia>> materiasOptional = estudianteService.obtenerMateriasDeEstudianteOptional(id);
+
+        if (materiasOptional.isPresent()) {
+            return ResponseEntity.ok(materiasOptional.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Estudiante no encontrado o no tiene materias");
+        }
+    }
+
 
 }
