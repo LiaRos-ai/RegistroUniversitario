@@ -2,16 +2,14 @@ package com.universidad.controller; // Define el paquete al que pertenece esta c
 
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
 import com.universidad.model.Materia;
-import com.universidad.service.IEstudianteService; // Importa la interfaz IEstudianteService del paquete service
-
+import com.universidad.service.IEstudianteService;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired; // Importa la anotación Autowired de Spring
-import org.springframework.http.ResponseEntity; // Importa la clase ResponseEntity de Spring para manejar respuestas HTTP
-import org.springframework.http.HttpStatus; // Importa la clase HttpStatus de Spring para manejar códigos de estado HTTP
-import org.springframework.web.bind.annotation.*; // Importa las anotaciones de Spring para controladores web
-
-import java.util.List; // Importa la interfaz List para manejar listas
+import java.util.List;
 
 @RestController // Anotación que indica que esta clase es un controlador REST de Spring
 @RequestMapping("/api/estudiantes") // Define la ruta base para las solicitudes HTTP a este controlador
@@ -30,7 +28,8 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiantes); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes
     }
 
-    @GetMapping("/inscripcion/{numeroInscripcion}") // Anotación que indica que este método maneja solicitudes GET con un parámetro de ruta
+    @GetMapping("/inscripcion/{numeroInscripcion}")
+    // Anotación que indica que este método maneja solicitudes GET con un parámetro de ruta
     public ResponseEntity<EstudianteDTO> obtenerEstudiantePorNumeroInscripcion(@PathVariable String numeroInscripcion) { // Método para obtener un estudiante por su número de inscripción
         EstudianteDTO estudiante = estudianteService.obtenerEstudiantePorNumeroInscripcion(numeroInscripcion); // Llama al servicio para obtener el estudiante
         return ResponseEntity.ok(estudiante); // Retorna una respuesta HTTP 200 OK con el estudiante encontrado
@@ -58,7 +57,8 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudianteActualizado); // Retorna una respuesta HTTP 200 OK con el estudiante actualizado
     }
 
-    @PutMapping("/{id}/baja") // Anotación que indica que este método maneja solicitudes PUT para dar de baja un estudiante
+    @PutMapping("/{id}/baja")
+    // Anotación que indica que este método maneja solicitudes PUT para dar de baja un estudiante
     @Transactional // Anotación que indica que este método debe ejecutarse dentro de una transacción
     @ResponseStatus(HttpStatus.OK) // Anotación que indica que la respuesta HTTP debe tener un estado 200 OK
     public ResponseEntity<EstudianteDTO> eliminarEstudiante(@PathVariable Long id, @RequestBody EstudianteDTO estudianteDTO) { // Método para eliminar un estudiante
@@ -70,6 +70,12 @@ public class EstudianteController { // Define la clase EstudianteController
     public ResponseEntity<List<EstudianteDTO>> obtenerEstudianteActivo() { // Método para obtener una lista de estudiantes activos
         List<EstudianteDTO> estudiantesActivos = estudianteService.obtenerEstudianteActivo(); // Llama al servicio para obtener los estudiantes activos
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
+    }
+
+    @GetMapping("/cursos/{materia}")
+    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantesPorCurso(@PathVariable String materia) {
+        List<EstudianteDTO> estudiantesPorCurso = estudianteService.obtenerEstudiantesPorCurso(materia);
+        return ResponseEntity.ok(estudiantesPorCurso);
     }
 
 }

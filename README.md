@@ -1,39 +1,44 @@
-# Proyecto CRUD - Universidad
+# Uso de Optional en Java (Activida #4)
+## Integrantes:
+- Aaron Oswaldo Nina Calzada
+- Genesis Jalid Tapia Cortez
+- Carlos Manuel Miranda Aguirre
 
-Este repositorio contiene la base del proyecto Universitario utilizando **Spring Boot**. Cada grupo debe trabajar en su propia rama según las instrucciones del docente.
+Nota: Los tres integrantes colaboraron en todo el desarrollo del proyecto, incluyendo Parte 1: Investigación y Parte 2: Implementación Técnica de optional
 
----
+## ¿Qué es Optional en Java? ¿Por qué se recomienda su uso?
+Optional<T> es una clase contenedora que puede almacenar un valor del tipo T o estar vacío. Se utiliza para representar valores que pueden o no estar presentes, evitando el uso explícito de null. Se recomienda su uso porque:
+- Reduce errores como el NullPointerException.
+- Hace el código más legible y seguro.
+- Obliga al programador a considerar la ausencia de valores.
 
-## 🚀 Objetivo
+## ¿Cuál es la diferencia entre Optional.empty(), Optional.of() y Optional.ofNullable()?
+- Optional.empty(): Crea un Optional sin valor, es decir, vacío.
+- Optional.of(value): Crea un Optional con un valor *no nulo*. Si el valor es null, lanza NullPointerException.
+- Optional.ofNullable(value): Crea un Optional que puede contener un valor o estar vacío si el valor es null.
 
-Completar las operaciones requeridas sobre el Proyecto.
+## ¿Qué ventajas tiene Optional frente a regresar null?
+- Elimina la necesidad de verificaciones explícitas de null.
+- Hace evidente en la firma del método que un valor puede estar ausente.
+- Facilita un estilo funcional de programación con métodos como map(), filter(), orElse(), etc.
+- Mejora la mantenibilidad y reduce errores de tiempo de ejecución.
 
----
+## ¿Cómo se integra Optional en Spring Data JPA?
+Spring Data JPA permite retornar Optional en los métodos de repositorio. Por ejemplo:
+java
+Optional<User> findById(Long id);
 
-## 👥 Grupos y ramas asignadas
+Esto indica claramente que el resultado puede no existir, evitando tener que manejar manualmente valores null.
 
-| Grupo | Rama asignada       | Integrantes                     |
-|-------|---------------------|----------------------------------|
-| 01    | `grupo-01-springb`  | [Enrique Rafael Fernandez Chiri, Nohemy Ruth Mamani Apaza, Samantha Rousse Gironda Mina, Josué Misael López Huanca, Luz Belen Chavez Patzi, Oscar Joel Choque Flores, Cristhian Pablo Alvarez Guarachi]               |
-| 02    | `grupo-02-springb`     | [Maya Cadiz,Leandro Chavez,Masiel Chirinos, Sergio Luque, Jordy Miranda, Saul Sanchez, Elizabeth Suzaño]               |
-| 03    | `grupo-03-springb`     | [Bautista Mollo Denzel Guden, Copa Quispe Esther Sara, Guarachi Arguata Alberth, Reyes Barja Carlos Eduardo, Rojas Condoria Fidel Angel, Tancara Suñagua Joel Hernan.]               |
-| 04    | `grupo-04-springb`     | [Marcelo Alejandro Villarroel Gutierrez, Jonathan Gerson Gutierrez Condori, Betzabe Gutierrez Morales, Mikaela Belen Cordova Vasquez, Jhessica Coral Villca Palma,Karen Rocio Catari Calderon, Abigail Blanca Mamani Mamani,Luz Edely Aruquipa Ururi]               |
-| 05    | `grupo-05-springb`     | ["Diana Cecilia Flores Chacon, Juan sebastian camacho fernandez, Andres wiliam galarza salguero, Harold Ruddy Quispe Hilari, Jose alejandro diaz ali, Michelle Ruth Poma Ramos, Daron Augusto Baldiviezo Aillon"]               |
-| 06    | `grupo-06-springb`     | [José Aruquipa, Miguel Calderon, Herlan Callisaya, Oscar Lujan, Edith Marca, Luz Tinta, Daniel Zeballos]               |
-| 07    | `grupo-07-springb`     | [Lenz Abad Alanoca Ojeda,Juan Vidal Mamani Riveros,Herlan Choque Flores,Lorgio Emilio Chura Carrillo,Jesus Alejandro Cruz,Juan Carlos Limachi Maydana]               |
-| 08    | `grupo-08-springb`     | [Amilcar Josias Yujra Chipana, Luis Alfredo Quispe Ortiz, Alan Sergio Yupanqui Corini, Yehonatan Oscar Limachi Corina, Melany Abril Mamani Chamizo, Limbert Mamani Quiñajo, Ronald Choque Sillo, José Alejandro Fernandez Sanchez]               |
-| 09    | `grupo-09-springb`     | [Bautista Coaquira Jose Abraham, Laura Rios Lizbeth Fabiola, Penelope Gema Copana Fuentes, Sasha Johannes konrad Arana Ramirez, Callisaya Vargas Marco Ronaldo, Callisaya Lanes Shelly Anahi, Choque Gutierrez Manuel Alejandro, Elías Daniel Beltrán Selaez]               |
-| 10    | `grupo-10-springb`     | [María Teresa Aspiazu Sánchez,Jesus Abed Herrera Sirpa,Joel Alejandro Pérez Murillo,Ariadne Checcid Quiroz Coila,Brandom Jhoseff Amezaga GarridoCael Mathew Cuevas Alconini,Jose Alfredo Choque Choque]               |
-| 11    | `grupo-11-springb`     | [Israel Andres Quenta Pomacusi, Edson Javier Mamani Ticona,Jhamil Elias Mamani Colque,Alexander Nataniel Castillo Centellas,Adrian Marcelo Requena Oros,Maritza Zarate Paco,Amiel Natanieli Mendez Vargas,Adriana Valeria Fernandez Flores,Jhoel Alexander Chipana Paye]|               |
-| 12    | `grupo-12-springb`     | [Victor Bernardo Quispe Rojas,Gabriel Omar Cumara Patty,Cristian William Bautista Villcacuti,Rosa Katerine Gonzales Choque,Alvin Angel Magne Aruquipa,Blanca Nataly Chipana Orellana,Ronald Mendoza Caspa,Jose Julian Quinteros Mollinedo]|
-| 13    | `grupo-13-springb`     | [Quispe Adriana, Carvajal Ester, Tirado Nayheli, Canaviri Carlos, Mamani Iver, Loza Humberto, Mamani Sarahi, Ticona Alex]|
-| 14    | `grupo-14-springb`     | [Gutierrez Challapa Daniel Rodrigo, Hidalgo Colque Ariana Daniela,Huanca Tito Jose Manuel,Mamani Mamani Mirko Sony,Quecaño Uruña Erika,Quiñajo Berrios Melina Viana]|
-| 15   | `grupo-15-springb`     | [Julio Picavia Saravia, Carlos Callisaya Rosas]|
----
+## ¿Qué método de Optional permite lanzar una excepción si no hay resultado?
+orElseThrow()
+
+Este método lanza una excepción si el Optional está vacío. Puede usarse así:
+java
+User user = optionalUser.orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
 
-## 📦 Cómo trabajar en tu rama
-
-1. Clona el repositorio:
-```bash
-git clone https://github.com/LiaRos-ai/RegistroUniversitario.git
+## ¿Por qué es útil Optional en el contexto de una API REST?
+En una API REST, muchas veces se consultan recursos que pueden no existir. Optional ayuda a manejar estos casos limpiamente, por ejemplo, retornando un 404 Not Found si un recurso no está presente. Además:
+- Mejora la claridad del código.
+- Permite escribir controladores más concisos y seguros.
