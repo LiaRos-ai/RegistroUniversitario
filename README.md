@@ -37,3 +37,50 @@ Usuario usuario = usuarioRepository.findById(id)
 ```
 ## 🔄¿Por qué es útil Optional en el contexto de una API REST?
 En una API REST, `Optional` permite manejar respuestas en las que un recurso puede no estar presente sin depender de `null`. Se puede utilizar en servicios para evitar respuestas inesperadas y mejorar la robustez de la API.
+
+# Base de Datos: Relación Estudiantes-Materias
+
+## Tabla `estudiante_materia`
+
+Tabla de relación muchos-a-muchos que registra las materias en las que está inscrito cada estudiante.
+
+### Estructura SQL
+```sql
+CREATE TABLE estudiante_materia (
+    id_estudiante BIGINT NOT NULL,
+    id_materia BIGINT NOT NULL,
+    PRIMARY KEY (id_estudiante, id_materia),
+    FOREIGN KEY (id_estudiante) REFERENCES persona(id_persona),
+    FOREIGN KEY (id_materia) REFERENCES materias(id_materia)
+);
+```
+
+### Insercion datos ejemplo
+```sql
+INSERT INTO estudiante_materia (id_estudiante, id_materia) VALUES
+(1, 1), -- Estudiante 1 inscrito en Álgebra
+(1, 3), -- Estudiante 1 inscrito en Química Orgánica
+(2, 2), -- Estudiante 2 inscrito en Física General
+(3, 5), -- Estudiante 3 inscrito en Programación Avanzada
+(4, 4), -- Estudiante 4 inscrito en Inglés Técnico
+(4, 2); -- Estudiante 4 también inscrito en Física General
+```
+### Tabla materias
+Esta tabla almacena información sobre las materias disponibles.
+Datos de ejemplo para materias:
+
+```sql
+INSERT INTO estudiante_materia (id_estudiante, id_materia) VALUES
+INSERT INTO materias (codigo_unico, creditos, nombre_materia) VALUES
+('MAT101', 3, 'Álgebra'),
+('PHY202', 4, 'Física General'),
+('CHE303', 4, 'Química Orgánica'),
+('ENG104', 2, 'Inglés Técnico'),
+('CS505', 5, 'Programación Avanzada');
+```
+
+### Diagrama de relaciones
+
+```
+persona (1) → (n) estudiante_materia (n) ← (1) materias
+```
