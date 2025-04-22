@@ -37,9 +37,13 @@ public class EstudianteController { // Define la clase EstudianteController
     }
 
     @GetMapping("/{id}/materias")
-    public ResponseEntity<List<Materia>> obtenerMateriasDeEstudiante(@PathVariable("id") Long estudianteId) {
-        List<Materia> materias = estudianteService.obtenerMateriasDeEstudiante(estudianteId);
-        return ResponseEntity.ok(materias);
+    public ResponseEntity<?> obtenerMateriasDeEstudiante(@PathVariable("id") Long estudianteId) {
+        try {
+            List<Materia> materias = estudianteService.obtenerMateriasDeEstudiante(estudianteId);
+            return ResponseEntity.ok(materias);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping // Anotación que indica que este método maneja solicitudes POST

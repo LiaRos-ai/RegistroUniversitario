@@ -45,14 +45,14 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
                 .collect(Collectors.toList()); // Recoge los resultados en una lista
     }
 
-
+    //Ejercicio
     @Override
-    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId) { // Método para obtener las materias de un estudiante por su ID
-        // Busca el estudiante por su ID y obtiene sus materias
-        Estudiante estudiante = estudianteRepository.findById(estudianteId)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-        return estudiante.getMaterias();
+    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId) {
+        return estudianteRepository.findById(estudianteId)
+                .map(Estudiante::getMaterias)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con ID: " + estudianteId));
     }
+
 
     @Override
     public EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO) { // Método para crear un nuevo estudiante
