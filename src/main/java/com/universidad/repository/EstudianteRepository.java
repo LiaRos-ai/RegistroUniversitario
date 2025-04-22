@@ -1,6 +1,9 @@
 package com.universidad.repository; // Define el paquete al que pertenece esta clase
 
 import com.universidad.model.Estudiante; // Importa la clase Estudiante del paquete model
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository; // Importa la anotación Repository de Spring
 
@@ -14,6 +17,8 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
     // Método para encontrar un estudiante por su estado
     Estudiante findByEstado(String estado); // Método para encontrar un estudiante por su estado
 
+    //
+    Optional<Estudiante> findById(Long id);
 
 
 }

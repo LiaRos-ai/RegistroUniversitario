@@ -4,7 +4,7 @@ import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del 
 import com.universidad.model.Materia;
 
 import java.util.List; // Importa la interfaz List para manejar listas
-
+import java.util.Optional;
 public interface IEstudianteService { // Define la interfaz IEstudianteService
     
     /**
@@ -33,9 +33,10 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      * @param estudianteId ID del estudiante.
      * @return Lista de materias del estudiante.
      */
-    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId); // Método para obtener las materias de un estudiante por su ID
+    // GRUPO 13 IMPLEMENTACION DEL OPTIONAL
+    Optional<List<Materia>> obtenerMateriasDeEstudiante(Long estudianteId);
 
-    
+
     /**
      * Crea un nuevo estudiante.
      * @param estudianteDTO DTO del estudiante a crear.
