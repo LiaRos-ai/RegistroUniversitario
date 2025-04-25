@@ -28,8 +28,9 @@ Completar las operaciones requeridas sobre el Proyecto.
 | 12    | `grupo-12-springb`     | [Victor Bernardo Quispe Rojas,Gabriel Omar Cumara Patty,Cristian William Bautista Villcacuti,Rosa Katerine Gonzales Choque,Alvin Angel Magne Aruquipa,Blanca Nataly Chipana Orellana,Ronald Mendoza Caspa,Jose Julian Quinteros Mollinedo]|
 | 13    | `grupo-13-springb`     | [Quispe Adriana, Carvajal Ester, Tirado Nayheli, Canaviri Carlos, Mamani Iver, Loza Humberto, Mamani Sarahi, Ticona Alex]|
 | 14    | `grupo-14-springb`     | [Gutierrez Challapa Daniel Rodrigo, Hidalgo Colque Ariana Daniela,Huanca Tito Jose Manuel,Mamani Mamani Mirko Sony,Quecaño Uruña Erika,Quiñajo Berrios Melina Viana]|
-| 15   | `grupo-15-springb`     | [Julio Picavia Saravia, Carlos Callisaya Rosas]|
----
+| 15   | `grupo-15-springb`     | [Julio Picavia Saravia, Carlos Callisaya Rosas, Iver Mamani, Amiel Natanieli Méndez Vargas, Adriana Valeria Fernández Flores, Luz Edely Aruquipa Ururi]|
+| 16   | `grupo-16-springb`     | [Miranda Aguirre Carlos Manuel, Tapia Cortez Genesis Jalid, Lucas Calderon, David Mamani, Rudy Ibarra, Julio Cesar Ticona, José Alejandro Fernández Sánchez ]
+|---
 
 
 ## 📦 Cómo trabajar en tu rama
