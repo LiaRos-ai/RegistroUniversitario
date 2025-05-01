@@ -73,9 +73,7 @@ Se creó la interfaz `UnidadTematicaRepository`, que extiende de `JpaRepository`
 Este método permite obtener todas las unidades temáticas asociadas a una materia específica mediante su ID.
 
 
-
-
-
+![imagen](imagenesReadme/5.png)
 
 
 ### 5. Creación de la Interfaz y Servicio de `UnidadTematica` (Realizado por Picavia Julio Erick)
@@ -91,6 +89,8 @@ Se implementó la lógica del método en la clase de servicio:
   Aquí se realiza la lógica necesaria para recuperar y transformar las unidades temáticas asociadas a una materia.
 
 
+![imagen](imagenesReadme/6.png)
+![imagen](imagenesReadme/7.png)
 
 
 
@@ -105,6 +105,7 @@ Se añadió el siguiente método a la interfaz `IMateriaService`:
 Este método permite listar todas las materias junto con sus respectivas unidades temáticas.
 
 
+![imagen](imagenesReadme/8.png)
 
 
 
