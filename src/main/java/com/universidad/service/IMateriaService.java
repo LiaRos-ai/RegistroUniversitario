@@ -2,7 +2,10 @@ package com.universidad.service;
 
 import com.universidad.dto.MateriaDTO;
 import com.universidad.model.Materia;
+<<<<<<< HEAD
 import com.universidad.dto.UnidadTematicaDTO;
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 import java.util.List;
 
 public interface IMateriaService {
@@ -12,6 +15,7 @@ public interface IMateriaService {
     MateriaDTO crearMateria(MateriaDTO materia);
     MateriaDTO actualizarMateria(Long id, MateriaDTO materia);
     void eliminarMateria(Long id);
+<<<<<<< HEAD
 
     // TAREA GRUPO
     List<MateriaDTO> listarMateriasConUnidades();  // Extra: Listar materias con unidades incluidas
@@ -30,3 +34,6 @@ public interface IMateriaService {
 
 
 
+=======
+}
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3

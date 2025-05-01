@@ -6,7 +6,10 @@ import com.universidad.service.IMateriaService;
 import jakarta.transaction.Transactional;
 
 import com.universidad.dto.MateriaDTO;
+<<<<<<< HEAD
 import com.universidad.dto.UnidadTematicaDTO;
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,6 +100,7 @@ public class MateriaController {
         }
         return ResponseEntity.ok(circulo);
     }
+<<<<<<< HEAD
 
     // TAREA GRUPO
     /**
@@ -117,4 +121,6 @@ public class MateriaController {
         return ResponseEntity.ok(actualizada);
     }
 
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 }

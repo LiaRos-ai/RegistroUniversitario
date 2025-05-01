@@ -11,5 +11,9 @@ import java.util.Optional;
 public interface MateriaRepository extends JpaRepository<Materia, Long> {
     Materia findByCodigoUnico(String codigoUnico);
 
+<<<<<<< HEAD
+=======
+    @Lock(LockModeType.PESSIMISTIC_WRITE) // Bloqueo pesimista para evitar condiciones de carrera
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
     Optional<Materia> findById(Long id);
 }

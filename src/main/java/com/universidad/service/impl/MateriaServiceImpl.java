@@ -4,15 +4,21 @@ import com.universidad.model.Materia;
 import com.universidad.repository.MateriaRepository;
 import com.universidad.service.IMateriaService;
 import com.universidad.dto.MateriaDTO;
+<<<<<<< HEAD
 import com.universidad.dto.UnidadTematicaDTO;
 import com.universidad.model.UnidadTematica;
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+<<<<<<< HEAD
 import org.springframework.transaction.annotation.Transactional;
 
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -88,6 +94,7 @@ public class MateriaServiceImpl implements IMateriaService {
     public void eliminarMateria(Long id) {
         materiaRepository.deleteById(id);
     }
+<<<<<<< HEAD
 
    // TAREA GRUPO
    @Override
@@ -154,4 +161,6 @@ public class MateriaServiceImpl implements IMateriaService {
 
 
 
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 }
