@@ -1,42 +1,164 @@
-2025# Proyecto CRUD - Universidad
+// DOCUMENTACIÓN DE MODIFICACIONES – TAREA PARTE 1
+// Relaciones One-to-Many y Cascadas
+// Participantes del Grupo:
+// PICAVIA SARAVIA JULIO ERICK
+// CARLOS JAVIER CALLIZAYA ROSAS
+// MENDEZ VARGAS AMIEL NATANAELI
+// FERNANDEZ FLORES ADRIANA VALERIA
+// ARUQUIPA URURI LUZ EDELY
+// IVER MAMANI CORDERO
 
-Este repositorio contiene la base del proyecto Universitario utilizando **Spring Boot**. Cada grupo debe trabajar en su propia rama según las instrucciones del docente.
+// Cambios y creaciones realizadas
 
----
+// 1. Creación de la entidad UnidadTematica (Realizado por Fernandez Adriana)
+// Se desarrolló la clase UnidadTematica.java con los siguientes campos: id, titulo, descripcion y la relación con la entidad Materia mediante Many-to-One.
+// También se utilizó la anotación @JsonBackReference para evitar ciclos de serialización.
 
-## 🚀 Objetivo
+package com.universidad.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-Completar las operaciones requeridas sobre el Proyecto.
+@Entity
+@Data
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UnidadTematica {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String titulo;
+    private String descripcion;
 
-**Grupos y ramas asignadas**
+    @ManyToOne
+    @JoinColumn(name = "materia_id")
+    @JsonBackReference
+    private Materia materia;
+}
 
-|**Grupo**|**Ramaogiana**|**Integrantes**|
-| :-: | :-: | :-: |
-|01|grupo-01-springb|[Enrique Rafael Fernández Chiri, Nohemy Ruth Mamani Apaza, Samantha Rousse Gironda Mina, Josué Misael López Huanca, Luz Belén Chávez Patzi, Oscar Joel Choque Flores, Cristhian Pablo Álvarez Guarachi]|
-|02|grupo-02-springb|[Maya Cádiz, Leandro Chávez, Masiel Chirinos, Sergio Luque, Jordy Miranda, Saúl Sánchez, Elizabeth Suzaño]|
-|03|grupo-03-springb|[Bautista Mollo Denzel Guden, Copa Quispe Esther Sara, Guarachi Arguata Alberth, Reyes Barja Carlos Eduardo, Rojas Condoria Fidel Angel, Tancara Suñagua Joel Hernan.]|
-|04|grupo-04-springb|[Marcelo Alejandro Villarroel Gutiérrez, Jonathan Gerson Gutiérrez Condori, Betzabe Gutiérrez Morales, Mikaela Belén Córdova Vásquez, Jhessica Coral Villca Palma, Karen Rocio Catari Calderón, Abigail Blanca Mamani Mamani]|
-|05|grupo-05-springb|["Diana Cecilia Flores Chacón, Juan Sebastián Camacho Fernández, Andrés Wiliam Galarza Salguero, Harold Ruddy Quispe Hilari, José Alejandro Díaz Ali, Michelle Ruth Poma Ramos, Daron Augusto Baldiviezo Aillon"]|
-|06|grupo-06-springb|[José Aruquipa, Miguel Calderón, Herlan Callisaya, Oscar Luján, Edith Marca, Luz Tinta, Daniel Zeballos]|
-|07|grupo-07-springb|[Lenz Abad Alanoca Ojeda,Juan Vidal Mamani Riveros,Herlan Choque Flores,Lorgio Emilio Chura Carrillo,Jesús Alejandro Cruz,Juan Carlos Limachi Maydana]|
-|08|grupo-08-springb|[Amílcar Josías Yujra Chipana, Luis Alfredo Quispe Ortiz, Alan Sergio Yupanqui Corini, Yehonatan Oscar Limachi Corina, Melany Abril Mamani Chamizo, Limbert Mamani Quiñajo, Ronald Choque Sillo]|
-|09|grupo-09-springb|[Bautista Coaquira Jose Abraham, Laura Rios Lizbeth Fabiola, Penélope Gema Copana Fuentes, Sasha Johannes konrad Arana Ramirez, Callisaya Vargas Marco Ronaldo, Callisaya Lanes Shelly Anahi, Choque Gutiérrez Manuel Alejandro, Elías Daniel Beltrán Selaez]|
-|10|grupo-10-springb|[María Teresa Aspiazu Sánchez, Jesús Abed Herrera Sirpa, Joel Alejandro Pérez Murillo, Ariadne Checcid Quiroz Coila, Brandom Jhoseff Amezaga Garrido Cael Mathew Cuevas Alconini, José Alfredo Choque Choque]|
-|11|grupo-11-springb|[Israel Andrés Quenta Pomacusi, Edson Javier Mamani Ticona,Jhamil Elías Mamani Colque,Alexander Nataniel Castillo Centellas,Adrián Marcelo Requena Oros,Maritza Zárate Paco ,Jhoel Alexander Chipana Paye]|
-|12|grupo-12-springb|[Víctor Bernardo Quispe Rojas,Gabriel Omar Cumara Patty,Cristian William Bautista Villcacuti,Rosa Katerine Gonzales Choque,Alvin Angel Magne Aruquipa,Blanca Nataly Chipana Orellana,Ronald Mendoza Caspa,José Julián Quinteros Mollinedo]|
-|13|grupo-13-springb|[Quispe Adriana, Carvajal Ester, Tirado Nayheli, Canaviri Carlos, Loza Humberto, Mamani Sarahi, Ticona Alex]|
-|14|grupo-14-springb|[Gutiérrez Challapa Daniel Rodrigo, Hidalgo Colque Ariana Daniela,Huanca Tito José Manuel,Mamani Mamani Mirko Sony,Quecaño Uruña Erika,Quiñajo Berrios Melina Viana]|
-|15|grupo-15-springb|[Julio Picavia Saravia, Carlos Callisaya Rosas, Iver Mamani, Amiel Natanieli Méndez Vargas, Adriana Valeria Fernández Flores, Luz Edely Aruquipa Ururi]|
-|16|Grupo-16-springb|[Miranda Aguirre Carlos Manuel, Tapia Cortez Genesis Jalid, Aarón Oswaldo Nina Calzada, Lucas Calderon, David Mamani, Rudy Ibarra, Julio Cesar Ticona, José Alejandro Fernández Sánchez ]|
+// 2. Modificación de la entidad Materia (Realizado por Fernandez Adriana)
+// Se incorporó la siguiente lista de unidades temáticas:
+// Esta relación permite vincular múltiples unidades temáticas a una sola materia.
 
+@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<UnidadTematica> unidades = new ArrayList<>();
 
+// 3. Creación de los DTOs (Realizado por Fernandez Adriana)
+// Se añadieron los siguientes DTOs:
 
+// UnidadTematicaDTO.java
+@Data
+public class UnidadTematicaDTO {
+    private Long id;
+    private String titulo;
+    private String descripcion;
+}
 
----
+// MateriaDTO.java se amplió para incluir el campo:
+private List<UnidadTematicaDTO> unidadesTematicas;
 
+// 4. Creación del repositorio UnidadTematicaRepository (Realizado por Picavia Julio Erick)
 
-## 📦 Cómo trabajar en tu rama
+public interface UnidadTematicaRepository extends JpaRepository<UnidadTematica, Long> {
+    List<UnidadTematica> findByMateriaId(Long materiaId);
+}
 
-1. Clona el repositorio:
-```bash
-git clone https://github.com/LiaRos-ai/RegistroUniversitario.git
+// 5. Creación de la interfaz y servicio de UnidadTematica (Realizado por Picavia Julio Erick)
+
+// Interfaz IUnidadTematicaService.java
+public interface IUnidadTematicaService {
+    List<UnidadTematicaDTO> obtenerPorMateria(Long materiaId);
+}
+
+// Implementación UnidadTematicaServiceImpl.java
+@Service
+public class UnidadTematicaServiceImpl implements IUnidadTematicaService {
+    // Lógica del método
+    @Override
+    public List<UnidadTematicaDTO> obtenerPorMateria(Long materiaId) {
+        // implementación
+    }
+}
+
+// 6. Modificación en la interfaz IMateriaService
+public interface IMateriaService {
+    List<MateriaDTO> listarMateriasConUnidades();
+}
+
+// 7. Modificación en MateriaServiceImpl
+@Override
+@Transactional
+public List<MateriaDTO> listarMateriasConUnidades() {
+    // implementación del método
+}
+
+// 8. Modificación en MateriaController
+@GetMapping("/con-unidades")
+public List<MateriaDTO> listarMateriasConUnidades() {
+    return materiaService.listarMateriasConUnidades();
+}
+
+// 9. Creación del controlador UnidadTematicaController (Realizado por Fernandez Adriana)
+@GetMapping("/materia/{materiaId}")
+public List<UnidadTematicaDTO> listarPorMateria(@PathVariable Long materiaId) {
+    return service.obtenerPorMateria(materiaId);
+}
+
+// Extras implementados (Realizado por Fernandez Adriana)
+// Se cumplió con el requerimiento adicional de listar todas las materias con sus respectivas unidades temáticas utilizando el endpoint:
+GET /api/materias/con-unidades
+
+// Parte 2: Actualización en Cascada (CascadeType.ALL)
+// Ejercicio 2 – Reemplazo de unidades temáticas en cascada:
+
+// 1. Creación del endpoint PUT /materias/{id}/unidades (Realizado por Mendez Amiel)
+// Se implementó un endpoint PUT /api/materias/{id}/unidades que permite reemplazar por completo las unidades temáticas de una materia.
+// Esto se hizo utilizando las anotaciones cascade = CascadeType.ALL y orphanRemoval = true, de forma que:
+// Las unidades anteriores se eliminan automáticamente.
+// Las nuevas unidades se guardan al mismo tiempo que la materia.
+// Se evitó guardar duplicados con .distinct().
+
+@PutMapping("/materias/{id}/unidades")
+public ResponseEntity<MateriaDTO> reemplazarUnidades(@PathVariable Long id, @RequestBody List<UnidadTematicaDTO> nuevasUnidades) {
+    MateriaDTO materiaActualizada = materiaService.reemplazarUnidadesTematicas(id, nuevasUnidades);
+    return ResponseEntity.ok(materiaActualizada);
+}
+
+// En IMateriaService:
+MateriaDTO reemplazarUnidadesTematicas(Long id, List<UnidadTematicaDTO> nuevasUnidades);
+
+// 2. Configuración de la relación con cascade y orphanRemoval (Realizado por Mendez Amiel)
+// La relación OneToMany ya estaba definida correctamente así:
+@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<UnidadTematica> unidades = new ArrayList<>();
+
+// Esto permite:
+// Eliminar automáticamente unidades que se eliminen de la lista (orphanRemoval).
+// Guardar nuevas unidades junto con la materia (cascade).
+
+// 3. Lógica de reemplazo en el servicio (Realizado por Mendez Amiel)
+// En MateriaServiceImpl.java se creó el método reemplazarUnidadesTematicas(...) que:
+
+@Override
+@Transactional
+public MateriaDTO reemplazarUnidadesTematicas(Long id, List<UnidadTematicaDTO> nuevasUnidadesDTO) {
+    Materia materia = materiaRepository.findById(id).orElseThrow(...);
+    materia.getUnidades().clear();
+    List<UnidadTematica> nuevasUnidades = nuevasUnidadesDTO.stream().distinct().map(dto -> {
+        UnidadTematica unidad = new UnidadTematica();
+        unidad.setTitulo(dto.getTitulo());
+        unidad.setDescripcion(dto.getDescripcion());
+        unidad.setMateria(materia);
+        return unidad;
+    }).collect(Collectors.toList());
+    materia.getUnidades().addAll(nuevasUnidades);
+    Materia materiaGuardada = materiaRepository.save(materia);
+    return mapper.toDTO(materiaGuardada);
+}
+
+// 4. Prueba en Postman (Realizado por Mendez Amiel)
+// Se probó el endpoint PUT /materias/1/unidades enviando una nueva lista de unidades temáticas en formato JSON.
+// La solicitud reemplazó correctamente las unidades anteriores por las nuevas (Trigonometría y Álgebra Lineal).
+// El resultado fue exitoso (200 OK), validando el uso de cascade = ALL y orphanRemoval = true.
