@@ -189,7 +189,7 @@ MateriaDTO reemplazarUnidadesTematicas(Long id, List<UnidadTematicaDTO> nuevasUn
 
 La relación `OneToMany` ya estaba definida correctamente así:
 
-![imagen](imagenesReadme/15.png)
+![imagen](imagenesReadme/13.png)
 
 
 
@@ -212,7 +212,7 @@ En `MateriaServiceImpl.java` se creó el método `reemplazarUnidadesTematicas(..
 
 Creamos el endpoint en el controlador MateriaController.java:
 
-![imagen](imagenesReadme/16.png)
+![imagen](imagenesReadme/17.png)
 
 
 
@@ -223,4 +223,4 @@ Se probó el endpoint `PUT /materias/1/unidades` enviando una nueva lista de uni
 La solicitud reemplazó correctamente las unidades anteriores por las nuevas (ejemplo: Trigonometría y Álgebra Lineal).  
 
 El resultado fue exitoso (`200 OK`), validando el uso de `cascade = ALL` y `orphanRemoval = true`.
-![imagen](imagenesReadme/17.png)
+![imagen](imagenesReadme/16.png)
