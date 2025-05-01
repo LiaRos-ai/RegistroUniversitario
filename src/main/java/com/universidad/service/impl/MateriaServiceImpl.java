@@ -1,15 +1,18 @@
 package com.universidad.service.impl;
 
+import com.universidad.dto.UnidadTematicaDTO;
+import com.universidad.dto.MateriaDTO;
 import com.universidad.model.Materia;
+import com.universidad.model.UnidadTematica;
 import com.universidad.repository.MateriaRepository;
 import com.universidad.service.IMateriaService;
-import com.universidad.dto.MateriaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +23,11 @@ public class MateriaServiceImpl implements IMateriaService {
     private MateriaRepository materiaRepository;
 
     // Método utilitario para mapear Materia a MateriaDTO
-    private MateriaDTO mapToDTO(Materia materia) {
+
+    // En tu MateriaServiceImpl.java, actualiza el mapToDTO:
+
+    public MateriaDTO mapToDTO(Materia materia) {
+
         if (materia == null) return null;
         return MateriaDTO.builder()
                 .id(materia.getId())
@@ -28,9 +35,27 @@ public class MateriaServiceImpl implements IMateriaService {
                 .codigoUnico(materia.getCodigoUnico())
                 .creditos(materia.getCreditos())
                 .prerequisitos(materia.getPrerequisitos() != null ?
-                    materia.getPrerequisitos().stream().map(Materia::getId).collect(Collectors.toList()) : null)
+                        materia.getPrerequisitos().stream().map(Materia::getId).collect(Collectors.toList()) : null)
                 .esPrerequisitoDe(materia.getEsPrerequisitoDe() != null ?
-                    materia.getEsPrerequisitoDe().stream().map(Materia::getId).collect(Collectors.toList()) : null)
+                        materia.getEsPrerequisitoDe().stream().map(Materia::getId).collect(Collectors.toList()) : null)
+                .unidadesTematicas(
+                        materia.getUnidadesTematicas() != null ?
+                                materia.getUnidadesTematicas()
+                                        .stream()
+                                        .map(this::mapUnidadToDTO)
+                                        .collect(Collectors.toList()) :
+                                Collections.emptyList()
+                )
+                .build();
+    }
+
+    private UnidadTematicaDTO mapUnidadToDTO(UnidadTematica unidad) {
+        return UnidadTematicaDTO.builder()
+                .id(unidad.getId())
+                .nombre(unidad.getNombre())
+                .descripcion(unidad.getDescripcion())
+                .orden(unidad.getOrden())
+                .materiaId(unidad.getMateria().getId())
                 .build();
     }
 
