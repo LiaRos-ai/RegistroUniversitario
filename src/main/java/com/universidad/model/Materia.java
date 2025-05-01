@@ -1,37 +1,100 @@
 package com.universidad.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "materia") // Nombre de la tabla en la base de datos
-// Esta clase representa una materia en el sistema de gestión de estudiantes
-public class Materia {
-    
-    @Id // Anotación que indica que este campo es la clave primaria
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY) // Generación automática del ID
-    @Column(name = "id_materia") // Nombre de la columna en la base de datos
-    // El ID de la materia es generado automáticamente por la base de datos
+@Table(name = "materia")
+public class Materia implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_materia")
     private Long id;
 
-    @Column(name = "nombre_materia", nullable = false, length = 100) // Columna no nula con longitud máxima de 100 caracteres
-    // El nombre de la materia no puede ser nulo y tiene una longitud máxima de 100 caracteres
+    @Column(name = "nombre_materia", nullable = false, length = 100)
     private String nombreMateria;
 
-    @Column(name = "codigo_unico", nullable = false, unique = true) // Columna no nula y con valor único
-    // El código único de la materia no puede ser nulo y debe ser único en la base de datos
+    @Column(name = "codigo_unico", nullable = false, unique = true, length = 20)
     private String codigoUnico;
 
-    @Column(name = "creditos", nullable = false) // Columna no nula
-    // El número de créditos de la materia no puede ser nulo
+    @Column(name = "creditos", nullable = false)
     private Integer creditos;
 
+    @Version
+    private Long version;
+
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference // Evita ciclos infinitos con @JsonBackReference en UnidadTematica
+    private List<UnidadTematica> unidadesTematicas = new ArrayList<>();
+
+    // Relación Many-to-Many para los prerequisitos
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "materia_prerequisito",
+            joinColumns = @JoinColumn(name = "id_materia"),
+            inverseJoinColumns = @JoinColumn(name = "id_prerequisito")
+    )
+    private List<Materia> prerequisitos;
+
+    // Relación inversa de Many-to-Many
+    @ManyToMany(mappedBy = "prerequisitos")
+    private List<Materia> esPrerequisitoDe;
+
+    // Método para verificar ciclos de prerequisitos
+    public boolean formariaCirculo(Long prerequisitoId) {
+        Set<Long> visitados = new HashSet<>();
+        return formariaCirculoIterativo(prerequisitoId, visitados);
+    }
+
+    private boolean formariaCirculoIterativo(Long prerequisitoId, Set<Long> visitados) {
+        Set<Materia> pendientes = new HashSet<>(this.prerequisitos);
+        while (!pendientes.isEmpty()) {
+            Materia materia = pendientes.iterator().next();
+            pendientes.remove(materia);
+
+            if (materia.getId().equals(prerequisitoId)) {
+                return true;
+            }
+
+            if (!visitados.add(materia.getId())) {
+                continue;
+            }
+
+            if (materia.getPrerequisitos() != null) {
+                pendientes.addAll(materia.getPrerequisitos());
+            }
+        }
+        return false;
+    }
+
+    // Métodos auxiliares para agregar y eliminar unidades temáticas
+    public void addUnidadTematica(UnidadTematica unidadTematica) {
+        unidadesTematicas.add(unidadTematica);
+        unidadTematica.setMateria(this);
+    }
+
+    public void removeUnidadTematica(UnidadTematica unidadTematica) {
+        unidadesTematicas.remove(unidadTematica);
+        unidadTematica.setMateria(null);
+    }
 }
