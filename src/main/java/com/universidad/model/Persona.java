@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 
 @Getter // Genera un getter para todos los campos de la clase
 @Setter // Genera un setter para todos los campos de la clase
-//@Data
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder

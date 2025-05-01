@@ -1,6 +1,7 @@
 package com.universidad.controller;
 
 import com.universidad.model.Materia;
+import com.universidad.model.UnidadTematica;
 import com.universidad.service.IMateriaService;
 
 import jakarta.transaction.Transactional;
@@ -95,5 +96,24 @@ public class MateriaController {
             return ResponseEntity.badRequest().body(circulo);
         }
         return ResponseEntity.ok(circulo);
+    }
+
+    @GetMapping("/{id}/unidades")
+    public ResponseEntity<List<UnidadTematica>> obtenerUnidadesPorMateria(@PathVariable Long id) {
+        Materia materia = materiaService.buscarMateriaPorId(id);
+        return ResponseEntity.ok(materia.getUnidadesTematicas());
+    }
+
+    @PutMapping("/{id}/unidades")
+    public ResponseEntity<Void> reemplazarUnidades(
+            @PathVariable Long id,
+            @RequestBody List<UnidadTematica> nuevasUnidades) {
+        materiaService.reemplazarUnidadesTematicas(id, nuevasUnidades);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/con-unidades")
+    public ResponseEntity<List<Materia>> listarMateriasConUnidades() {
+        return ResponseEntity.ok(materiaService.listarMateriasConUnidades());
     }
 }

@@ -10,9 +10,12 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Getter // Genera un getter para todos los campos de la clase
 @Setter // Genera un setter para todos los campos de la clase
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
 @Builder
 @Entity
@@ -98,5 +101,9 @@ public class Materia implements Serializable {
         }
         return false;
     }
+
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<UnidadTematica> unidadesTematicas = new java.util.ArrayList<>();
 
 }
