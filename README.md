@@ -189,7 +189,7 @@ MateriaDTO reemplazarUnidadesTematicas(Long id, List<UnidadTematicaDTO> nuevasUn
 
 La relación `OneToMany` ya estaba definida correctamente así:
 
-![imagen](imagenesReadme/14.png)
+![imagen](imagenesReadme/15.png)
 
 
 
@@ -205,7 +205,7 @@ En `MateriaServiceImpl.java` se creó el método `reemplazarUnidadesTematicas(..
 - Guarda la materia en cascada.  
 - Usa `.distinct()` para evitar duplicados.
 
-![imagen](imagenesReadme/15.png)
+![imagen](imagenesReadme/14.png)
 
 
 
