@@ -100,4 +100,6 @@ public class EstudianteController { // Define la clase EstudianteController
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
     }
 
+
+
 }
