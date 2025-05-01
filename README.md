@@ -42,6 +42,9 @@ public class UnidadTematica {
     private Materia materia;
 }
 ```
+
+![imagen](imagenesReadme/1.png)
+
 ### 2. Modificación de la Entidad `Materia` (Realizado por Fernandez Adriana)
 
 Se incorporó la siguiente lista de unidades temáticas:  
