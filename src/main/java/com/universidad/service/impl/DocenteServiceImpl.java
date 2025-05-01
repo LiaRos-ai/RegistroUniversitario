@@ -1,4 +1,4 @@
-package com.universidad.service.impl;
+/* package com.universidad.service.impl;
 
 
 import com.universidad.dto.EstudianteDTO;
@@ -25,13 +25,13 @@ public class DocenteServiceImpl implements IDocenteService {
                 .collect(Collectors.toList());
     }
 
-    @Override
+   /*  @Override
     public List<DocenteDTO> obtenerTodosLosDocentesSegunDepartamento(String departamento){
         return docenteRepository.findByDepartamento(departamento).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+ 
     private DocenteDTO convertToDTO(Docente docente){
         return DocenteDTO.builder()
                 .id(docente.getId())
@@ -55,3 +55,4 @@ public class DocenteServiceImpl implements IDocenteService {
                 .build();
     }
 }
+ */

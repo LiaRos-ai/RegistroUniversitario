@@ -1,10 +1,9 @@
 package com.universidad.service;
 
-<<<<<<< HEAD
-public interface IMateriaService {
-=======
 import com.universidad.dto.MateriaDTO;
 import com.universidad.model.Materia;
+import com.universidad.model.UnidadTematica;
+
 import java.util.List;
 
 public interface IMateriaService {
@@ -14,5 +13,7 @@ public interface IMateriaService {
     MateriaDTO crearMateria(MateriaDTO materia);
     MateriaDTO actualizarMateria(Long id, MateriaDTO materia);
     void eliminarMateria(Long id);
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
+    List<UnidadTematica> obtenerUnidadesPorMateria(Long id);
+    List<Materia> obtenerMateriasConUnidades();
+    void reemplazarUnidades(Long materiaId, List<UnidadTematica> nuevasUnidades);
 }

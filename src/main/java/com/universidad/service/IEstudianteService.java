@@ -1,31 +1,11 @@
-package com.universidad.service;
+package com.universidad.service; // Define el paquete al que pertenece esta interfaz
 
-<<<<<<< HEAD
-import com.universidad.dto.EstudianteDTO;
-import com.universidad.dto.MateriaDTO;
-=======
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
 import com.universidad.model.Estudiante;
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 import com.universidad.model.Materia;
-import java.util.List;
-import java.util.Optional;
 
-public interface IEstudianteService {
-    List<EstudianteDTO> obtenerTodosLosEstudiantes();
-    List<EstudianteDTO> obtenerEstudianteActivo();
-    EstudianteDTO obtenerEstudiantePorNumeroInscripcion(String numeroInscripcion);
-    List<Materia> obtenerMateriasDeEstudiante(Long estudianteId);
-    EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO);
-    EstudianteDTO actualizarEstudiante(Long id, EstudianteDTO estudianteDTO);
-    EstudianteDTO eliminarId(Long id);
-    EstudianteDTO buscarPorNombre(String nombre);
-    List<EstudianteDTO> ordenarPorApellido();
-    List<MateriaDTO> materiasInscritasSegunId(Long id);
+import java.util.List; // Importa la interfaz List para manejar listas
 
-<<<<<<< HEAD
-}
-=======
 public interface IEstudianteService { // Define la interfaz IEstudianteService
     
     /**
@@ -88,4 +68,3 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      */
     Estudiante obtenerEstudianteConBloqueo(Long id); // Método para obtener un estudiante por su ID con bloqueo pesimista
 }
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3

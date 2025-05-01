@@ -1,20 +1,8 @@
-package com.universidad.service.impl;
+package com.universidad.service.impl; // Define el paquete al que pertenece esta clase
 
-import com.universidad.dto.EstudianteDTO;
-import com.universidad.dto.MateriaDTO;
-import com.universidad.exception.ExceptionEstudiante;
-import com.universidad.model.Estudiante;
+import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
+import com.universidad.model.Estudiante; // Importa la clase Estudiante del paquete model
 import com.universidad.model.Materia;
-<<<<<<< HEAD
-import com.universidad.repository.EstudianteRepository;
-import com.universidad.service.IEstudianteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-=======
 import com.universidad.repository.EstudianteRepository; // Importa la clase EstudianteRepository del paquete repository
 import com.universidad.service.IEstudianteService; // Importa la interfaz IEstudianteService del paquete service
 import com.universidad.validation.EstudianteValidator; // Importa la clase EstudianteValidator del paquete validation
@@ -29,15 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List; // Importa la interfaz List para manejar listas
 import java.util.stream.Collectors; // Importa la clase Collectors para manejar colecciones
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 
-@Service
-public class EstudianteServiceImpl implements IEstudianteService {
+@Service // Anotación que indica que esta clase es un servicio de Spring
+public class EstudianteServiceImpl implements IEstudianteService { // Define la clase EstudianteServiceImpl que implementa la interfaz IEstudianteService
 
     @Autowired
-<<<<<<< HEAD
-    private EstudianteRepository estudianteRepository;
-=======
     private EstudianteRepository estudianteRepository; // Inyección de dependencias del repositorio de estudiantes
 
     @Autowired // Inyección de dependencias del validador de estudiantes
@@ -51,31 +35,25 @@ public class EstudianteServiceImpl implements IEstudianteService {
     /*public EstudianteServiceImpl(EstudianteRepository estudianteRepository) {
             this.estudianteRepository = estudianteRepository;
     }*/
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 
     @Override
     @Cacheable(value = "estudiantes")
     public List<EstudianteDTO> obtenerTodosLosEstudiantes() {
-        return estudianteRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        // Obtiene todos los estudiantes y los convierte a DTO
+        return estudianteRepository.findAll().stream() // Obtiene todos los estudiantes de la base de datos
+                .map(this::convertToDTO) // Convierte cada Estudiante a EstudianteDTO
+                .collect(Collectors.toList()); // Recoge los resultados en una lista
     }
 
     @Override
     @Cacheable(value = "estudiante", key = "#numeroInscripcion")
     public EstudianteDTO obtenerEstudiantePorNumeroInscripcion(String numeroInscripcion) {
-        Estudiante estudiante = estudianteRepository.findByNumeroInscripcion(numeroInscripcion);
-        return convertToDTO(estudiante);
+        // Busca un estudiante por su número de inscripción y lo convierte a DTO
+        Estudiante estudiante = estudianteRepository.findByNumeroInscripcion(numeroInscripcion); // Busca el estudiante por su número de inscripción
+        return convertToDTO(estudiante); // Convierte el Estudiante a EstudianteDTO y lo retorna
     }
 
     @Override
-<<<<<<< HEAD
-    public List<EstudianteDTO> obtenerEstudianteActivo() {
-        return estudianteRepository.findAll().stream()
-                .filter(estudiante -> "activo".equalsIgnoreCase(estudiante.getEstado()))
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-=======
     @Cacheable(value = "estudiantesActivos")
     public List<EstudianteDTO> obtenerEstudianteActivo() { // Método para obtener una lista de estudiantes activos
         // Busca todos los estudiantes activos y los convierte a DTO
@@ -83,33 +61,19 @@ public class EstudianteServiceImpl implements IEstudianteService {
                 .filter(estudiante -> "activo".equalsIgnoreCase(estudiante.getEstado())) // Filtra los estudiantes activos
                 .map(this::convertToDTO) // Convierte cada Estudiante a EstudianteDTO
                 .collect(Collectors.toList()); // Recoge los resultados en una lista
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
     }
 
+
     @Override
-<<<<<<< HEAD
-    public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId) {
-=======
     @Cacheable(value = "materiasEstudiante", key = "#estudianteId")
     public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId) { // Método para obtener las materias de un estudiante por su ID
         // Busca el estudiante por su ID y obtiene sus materias
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
         Estudiante estudiante = estudianteRepository.findById(estudianteId)
                 .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
         return estudiante.getMaterias();
     }
 
     @Override
-<<<<<<< HEAD
-    public EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO) {
-        Estudiante estudiante = convertToEntity(estudianteDTO);
-        Estudiante estudianteGuardado = estudianteRepository.save(estudiante);
-        return convertToDTO(estudianteGuardado);
-    }
-
-    @Override
-    public EstudianteDTO actualizarEstudiante(Long id, EstudianteDTO estudianteDTO) {
-=======
     @CachePut(value = "estudiante", key = "#result.numeroInscripcion")
     @CacheEvict(value = {"estudiantes", "estudiantesActivos"}, allEntries = true)
     public EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO) { // Método para crear un nuevo estudiante
@@ -127,65 +91,21 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @CacheEvict(value = {"estudiantes", "estudiantesActivos"}, allEntries = true)
     public EstudianteDTO actualizarEstudiante(Long id, EstudianteDTO estudianteDTO) { // Método para actualizar un estudiante existente
         // Busca el estudiante por su ID, actualiza sus datos y lo guarda de nuevo
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
         Estudiante estudianteExistente = estudianteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado")); // Lanza una excepción si el estudiante no se encuentra
+        estudianteExistente.setNombre(estudianteDTO.getNombre()); // Actualiza el nombre
+        estudianteExistente.setApellido(estudianteDTO.getApellido()); // Actualiza el apellido
+        estudianteExistente.setEmail(estudianteDTO.getEmail()); // Actualiza el email
+        estudianteExistente.setFechaNacimiento(estudianteDTO.getFechaNacimiento()); // Actualiza la fecha de nacimiento
+        estudianteExistente.setNumeroInscripcion(estudianteDTO.getNumeroInscripcion()); // Actualiza el número de inscripción
+        estudianteExistente.setUsuarioModificacion("admin"); // Actualiza el usuario de modificación
+        estudianteExistente.setFechaModificacion(LocalDate.now()); // Actualiza la fecha de modificación
 
-        estudianteExistente.setNombre(estudianteDTO.getNombre());
-        estudianteExistente.setApellido(estudianteDTO.getApellido());
-        estudianteExistente.setEmail(estudianteDTO.getEmail());
-        estudianteExistente.setFechaNacimiento(estudianteDTO.getFechaNacimiento());
-        estudianteExistente.setNumeroInscripcion(estudianteDTO.getNumeroInscripcion());
-        estudianteExistente.setEstado(estudianteDTO.getEstado());
-        estudianteExistente.setUsuarioAlta(estudianteDTO.getUsuarioAlta());
-        estudianteExistente.setFechaAlta(estudianteDTO.getFechaAlta());
-        estudianteExistente.setUsuarioModificacion(estudianteDTO.getUsuarioModificacion());
-        estudianteExistente.setFechaModificacion(estudianteDTO.getFechaModificacion());
-        estudianteExistente.setUsuarioBaja(estudianteDTO.getUsuarioBaja());
-        estudianteExistente.setFechaBaja(estudianteDTO.getFechaBaja());
-        estudianteExistente.setMotivoBaja(estudianteDTO.getMotivoBaja());
-
-        Estudiante estudianteActualizado = estudianteRepository.save(estudianteExistente);
-        return convertToDTO(estudianteActualizado);
-    }
-    @Override
-    public EstudianteDTO eliminarId(Long id) {
-        Estudiante estudianteExistente = estudianteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-
-        // Establecer estado a "inactivo"
-        estudianteExistente.setEstado("inactivo");
-
-        // Asignar fechas y usuarios
-        estudianteExistente.setUsuarioAlta(estudianteExistente.getUsuarioAlta()); // Puedes ajustar según tu lógica
-        estudianteExistente.setFechaAlta(estudianteExistente.getFechaAlta()); // Si deseas mantener la fecha de alta previa
-
-        // Establecer las fechas de modificación y baja con la fecha actual
-        estudianteExistente.setUsuarioModificacion(estudianteExistente.getUsuarioModificacion());
-        estudianteExistente.setFechaModificacion(LocalDate.now());  // Fecha de modificación es la fecha actual
-        estudianteExistente.setUsuarioBaja(estudianteExistente.getUsuarioBaja());
-        estudianteExistente.setFechaBaja(LocalDate.now());  // Fecha de baja es la fecha actual
-        estudianteExistente.setMotivoBaja("la lic lo dijo");
-
-        // Guardar los cambios en el repositorio
-        Estudiante estudianteActualizado = estudianteRepository.save(estudianteExistente);
-
-        return convertToDTO(estudianteActualizado);
+        Estudiante estudianteActualizado = estudianteRepository.save(estudianteExistente); // Guarda el estudiante actualizado en la base de datos
+        return convertToDTO(estudianteActualizado); // Convierte el Estudiante actualizado a EstudianteDTO y lo retorna
     }
 
     @Override
-<<<<<<< HEAD
-    public EstudianteDTO buscarPorNombre(String nombre){
-        Estudiante estudiante = estudianteRepository.findByNombre(nombre);
-        return convertToDTO(estudiante);
-    }
-
-    @Override
-    public List<EstudianteDTO> ordenarPorApellido(){
-        return estudianteRepository.findAllByOrderByApellidoAsc().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-=======
     @CacheEvict(value = {"estudiante", "estudiantes", "estudiantesActivos"}, allEntries = true)
     public EstudianteDTO eliminarEstudiante(Long id, EstudianteDTO estudianteDTO) { // Método para eliminar (de manera lógica) un estudiante por su ID
         Estudiante estudianteExistente = estudianteRepository.findById(id)
@@ -227,64 +147,25 @@ public class EstudianteServiceImpl implements IEstudianteService {
                 .fechaBaja(estudiante.getFechaBaja()) // Asigna la fecha de baja (puede ser null si no se desea mostrar)
                 .motivoBaja(estudiante.getMotivoBaja()) // Asigna el motivo de baja (puede ser null si no se desea mostrar)
                 .build(); // Construye el objeto EstudianteDTO
->>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
     }
-
-    @Override
-    public List<MateriaDTO> materiasInscritasSegunId(Long id) {
-        Estudiante estudiante = estudianteRepository.findById(id)
-                .orElseThrow(() -> new ExceptionEstudiante("Estudiante con ID " + id + " no encontrado"));
-
-        return estudiante.getMaterias().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
-
-
-    private MateriaDTO convertToDTO(Materia materia){
-        return MateriaDTO.builder()
-                .id(materia.getId())
-                .codigoUnico(materia.getCodigoUnico())
-                .nombreMateria(materia.getNombreMateria())
-                .creditos(materia.getCreditos())
-                .build();
-
-    }
-
-    private EstudianteDTO convertToDTO(Estudiante estudiante) {
-        return EstudianteDTO.builder()
-                .id(estudiante.getId())
-                .nombre(estudiante.getNombre())
-                .apellido(estudiante.getApellido())
-                .email(estudiante.getEmail())
-                .fechaNacimiento(estudiante.getFechaNacimiento())
-                .numeroInscripcion(estudiante.getNumeroInscripcion())
-                .estado(estudiante.getEstado())
-                .usuarioAlta(estudiante.getUsuarioAlta())
-                .fechaAlta(estudiante.getFechaAlta())
-                .usuarioModificacion(estudiante.getUsuarioModificacion())
-                .usuarioBaja(estudiante.getUsuarioBaja())
-                .fechaBaja(estudiante.getFechaBaja())
-                .motivoBaja(estudiante.getMotivoBaja())
-                .build();
-    }
-
-    private Estudiante convertToEntity(EstudianteDTO estudianteDTO) {
-        return Estudiante.builder()
-                .id(estudianteDTO.getId())
-                .nombre(estudianteDTO.getNombre())
-                .apellido(estudianteDTO.getApellido())
-                .email(estudianteDTO.getEmail())
-                .fechaNacimiento(estudianteDTO.getFechaNacimiento())
-                .numeroInscripcion(estudianteDTO.getNumeroInscripcion())
-                .usuarioAlta(estudianteDTO.getUsuarioAlta())
-                .fechaAlta(estudianteDTO.getFechaAlta())
-                .usuarioModificacion(estudianteDTO.getUsuarioModificacion())
-                .fechaModificacion(estudianteDTO.getFechaModificacion())
-                .estado(estudianteDTO.getEstado())
-                .usuarioBaja(estudianteDTO.getUsuarioBaja())
-                .fechaBaja(estudianteDTO.getFechaBaja())
-                .motivoBaja(estudianteDTO.getMotivoBaja())
-                .build();
+    
+    // Método auxiliar para convertir DTO a entidad
+    private Estudiante convertToEntity(EstudianteDTO estudianteDTO) { // Método para convertir un EstudianteDTO a Estudiante
+        return Estudiante.builder() // Usa el patrón builder para crear un Estudiante
+                .id(estudianteDTO.getId()) // Asigna el ID
+                .nombre(estudianteDTO.getNombre()) // Asigna el nombre
+                .apellido(estudianteDTO.getApellido()) // Asigna el apellido
+                .email(estudianteDTO.getEmail()) // Asigna el email
+                .fechaNacimiento(estudianteDTO.getFechaNacimiento()) // Asigna la fecha de nacimiento
+                .numeroInscripcion(estudianteDTO.getNumeroInscripcion())  // Asigna el número de inscripción
+                .usuarioAlta(estudianteDTO.getUsuarioAlta()) // Asigna el usuario de alta
+                .fechaAlta(estudianteDTO.getFechaAlta()) // Asigna la fecha de alta
+                .usuarioModificacion(estudianteDTO.getUsuarioModificacion()) // Asigna el usuario de modificación
+                .fechaModificacion(estudianteDTO.getFechaModificacion()) // Asigna la fecha de modificación
+                .estado(estudianteDTO.getEstado()) // Asigna el estado (puede ser null si no se desea mostrar)
+                .usuarioBaja(estudianteDTO.getUsuarioBaja()) // Asigna el usuario de baja (puede ser null si no se desea mostrar)
+                .fechaBaja(estudianteDTO.getFechaBaja()) // Asigna la fecha de baja (puede ser null si no se desea mostrar)
+                .motivoBaja(estudianteDTO.getMotivoBaja()) // Asigna el motivo de baja (puede ser null si no se desea mostrar)
+                .build(); // Construye el objeto Estudiante
     }
 }
