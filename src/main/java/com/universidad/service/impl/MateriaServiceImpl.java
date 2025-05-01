@@ -1,5 +1,6 @@
 package com.universidad.service.impl;
 
+import com.universidad.dto.UnidadTematicaDTO;
 import com.universidad.model.Materia;
 import com.universidad.repository.MateriaRepository;
 import com.universidad.service.IMateriaService;
@@ -28,11 +29,18 @@ public class MateriaServiceImpl implements IMateriaService {
                 .codigoUnico(materia.getCodigoUnico())
                 .creditos(materia.getCreditos())
                 .prerequisitos(materia.getPrerequisitos() != null ?
-                    materia.getPrerequisitos().stream().map(Materia::getId).collect(Collectors.toList()) : null)
+                        materia.getPrerequisitos().stream().map(Materia::getId).collect(Collectors.toList()) : null)
                 .esPrerequisitoDe(materia.getEsPrerequisitoDe() != null ?
-                    materia.getEsPrerequisitoDe().stream().map(Materia::getId).collect(Collectors.toList()) : null)
+                        materia.getEsPrerequisitoDe().stream().map(Materia::getId).collect(Collectors.toList()) : null)
+                .unidadesTematicas(materia.getUnidadesTematicas() != null ?
+                        materia.getUnidadesTematicas().stream()
+                                .map(ut -> new UnidadTematicaDTO(ut.getId(), ut.getTitulo(), ut.getMateria().getId())) // Mapeo correcto de UnidadTematica
+                                .collect(Collectors.toList())
+                        : null)
                 .build();
     }
+
+
 
     @Override
     @Cacheable(value = "materias")
@@ -84,4 +92,14 @@ public class MateriaServiceImpl implements IMateriaService {
     public void eliminarMateria(Long id) {
         materiaRepository.deleteById(id);
     }
+    @Override
+    public Materia obtenerEntidadPorId(Long id) {
+        return materiaRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void guardarMateria(Materia materia) {
+        materiaRepository.save(materia);
+    }
+
 }
