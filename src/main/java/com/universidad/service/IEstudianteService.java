@@ -1,6 +1,7 @@
 package com.universidad.service; // Define el paquete al que pertenece esta interfaz
 
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
+import com.universidad.model.Estudiante;
 import com.universidad.model.Materia;
 import com.universidad.dto.EstudianteDTO;
 import com.universidad.model.Materia;
@@ -59,6 +60,7 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      * Elimina un estudiante por su ID.
      * @param id ID del estudiante a eliminar.
      */
+<<<<<<< HEAD
 
     EstudianteDTO eliminarEstudiante(Long id, EstudianteDTO estudianteDTO);
     List<EstudianteDTO> buscarEstudiantesPorNombre(String nombre);
@@ -80,4 +82,15 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      */
     List<Materia> obtenerCursosPorEstudianteId(Long estudianteId);
 
+=======
+    EstudianteDTO eliminarEstudiante(Long id, EstudianteDTO estudianteDTO); // Método para eliminar (de manera logica) un estudiante por su ID
+
+    /**
+     *  * Obtiene un estudiante por su ID con bloqueo pesimista.
+     * @param id ID del estudiante a obtener.
+     * @throws RuntimeException si el estudiante no se encuentra
+     * @return
+     */
+    Estudiante obtenerEstudianteConBloqueo(Long id); // Método para obtener un estudiante por su ID con bloqueo pesimista
+>>>>>>> main
 }
