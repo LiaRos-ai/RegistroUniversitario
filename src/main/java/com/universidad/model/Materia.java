@@ -1,5 +1,6 @@
 package com.universidad.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter // Genera un getter para todos los campos de la clase
@@ -98,5 +100,9 @@ public class Materia implements Serializable {
         }
         return false;
     }
+
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // el "lado padre" de la relación para serialización
+    private List<UnidadTematica> unidades;
 
 }
