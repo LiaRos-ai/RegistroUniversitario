@@ -1,25 +1,29 @@
-// DOCUMENTACIÓN DE MODIFICACIONES – TAREA PARTE 1
-// Relaciones One-to-Many y Cascadas
-// Participantes del Grupo:
-// PICAVIA SARAVIA JULIO ERICK
-// CARLOS JAVIER CALLIZAYA ROSAS
-// MENDEZ VARGAS AMIEL NATANAELI
-// FERNANDEZ FLORES ADRIANA VALERIA
-// ARUQUIPA URURI LUZ EDELY
-// IVER MAMANI CORDERO
+# Documentación de Modificaciones – Tarea Parte 1
 
-// Cambios y creaciones realizadas
+## Relaciones One-to-Many y Cascadas
 
-// 1. Creación de la entidad UnidadTematica (Realizado por Fernandez Adriana)
-// Se desarrolló la clase UnidadTematica.java con los siguientes campos: id, titulo, descripcion y la relación con la entidad Materia mediante Many-to-One.
-// También se utilizó la anotación @JsonBackReference para evitar ciclos de serialización.
+### Participantes del Grupo
+- **Picavia Saravia Julio Erick**
+- **Carlos Javier Callizaya Rosas**
+- **Mendez Vargas Amiel Natanaeli**
+- **Fernandez Flores Adriana Valeria**
+- **Aruquipa Ururi Luz Edely**
+- **Iver Mamani Cordero**
 
-package com.universidad.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+---
 
+## Cambios y Creaciones Realizadas
+
+### 1. Creación de la Entidad `UnidadTematica` (Realizado por Fernandez Adriana)
+Se desarrolló la clase `UnidadTematica.java` con los siguientes campos:
+- `id`
+- `titulo`
+- `descripcion`
+- Relación con la entidad `Materia` mediante `@ManyToOne`.
+
+Además, se utilizó la anotación `@JsonBackReference` para evitar ciclos de serialización.
+
+```java
 @Entity
 @Data
 @SuperBuilder
@@ -37,18 +41,19 @@ public class UnidadTematica {
     @JsonBackReference
     private Materia materia;
 }
+### 2. Modificación de la Entidad `Materia` (Realizado por Fernandez Adriana)
 
-// 2. Modificación de la entidad Materia (Realizado por Fernandez Adriana)
-// Se incorporó la siguiente lista de unidades temáticas:
-// Esta relación permite vincular múltiples unidades temáticas a una sola materia.
+Se incorporó la siguiente lista de unidades temáticas:  
+Esta relación permite vincular múltiples unidades temáticas a una sola materia.
+
 
 @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
 private List<UnidadTematica> unidades = new ArrayList<>();
 
-// 3. Creación de los DTOs (Realizado por Fernandez Adriana)
-// Se añadieron los siguientes DTOs:
+### 3. Creación de los DTOs (Realizado por Fernandez Adriana)
+## Se añadieron los siguientes DTOs:
 
-// UnidadTematicaDTO.java
+# UnidadTematicaDTO.java
 @Data
 public class UnidadTematicaDTO {
     private Long id;
