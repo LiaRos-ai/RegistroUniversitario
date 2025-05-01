@@ -24,6 +24,8 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
     @Autowired
     private EstudianteRepository estudianteRepository; // Inyección de dependencias del repositorio de estudiantes
 
+<<<<<<< HEAD
+=======
     @Autowired // Inyección de dependencias del validador de estudiantes
     private EstudianteValidator estudianteValidator; // Declara una variable para el validador de estudiantes
     
@@ -35,6 +37,7 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
     /*public EstudianteServiceImpl(EstudianteRepository estudianteRepository) {
             this.estudianteRepository = estudianteRepository;
     }*/
+>>>>>>> main
 
     @Override
     @Cacheable(value = "estudiantes")
@@ -43,6 +46,19 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
         return estudianteRepository.findAll().stream() // Obtiene todos los estudiantes de la base de datos
                 .map(this::convertToDTO) // Convierte cada Estudiante a EstudianteDTO
                 .collect(Collectors.toList()); // Recoge los resultados en una lista
+    }
+    @Override
+    public List<EstudianteDTO> buscarEstudiantesPorNombre(String nombre) {
+        return estudianteRepository.findByNombreContainingIgnoreCase(nombre).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EstudianteDTO> obtenerEstudiantesOrdenadosPorApellido() {
+        return estudianteRepository.findAllByOrderByApellidoAsc().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -118,6 +134,22 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
         Estudiante estudianteInactivo = estudianteRepository.save(estudianteExistente); // Guarda el estudiante inactivo en la base de datos
         return convertToDTO(estudianteInactivo); // Convierte el Estudiante inactivo a EstudianteDTO y lo retorna
     }
+    @Override
+    public List<EstudianteDTO> obtenerEstudiantesPorCurso(Long materiaId) {
+        return estudianteRepository.findByMateriaId(materiaId)
+                .orElseThrow(() -> new RuntimeException("No se encontró la materia con ID: " + materiaId))
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+    // En EstudianteServiceImpl.java
+    @Override
+    public List<Materia> obtenerCursosPorEstudianteId(Long estudianteId) {
+        Estudiante estudiante = estudianteRepository.findByIdWithMaterias(estudianteId)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con ID: " + estudianteId));
+
+        return estudiante.getMaterias();
+    }
 
     @Transactional
     public Estudiante obtenerEstudianteConBloqueo(Long id) {
@@ -148,7 +180,7 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
                 .motivoBaja(estudiante.getMotivoBaja()) // Asigna el motivo de baja (puede ser null si no se desea mostrar)
                 .build(); // Construye el objeto EstudianteDTO
     }
-    
+
     // Método auxiliar para convertir DTO a entidad
     private Estudiante convertToEntity(EstudianteDTO estudianteDTO) { // Método para convertir un EstudianteDTO a Estudiante
         return Estudiante.builder() // Usa el patrón builder para crear un Estudiante

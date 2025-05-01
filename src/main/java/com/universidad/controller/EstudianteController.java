@@ -1,6 +1,7 @@
 package com.universidad.controller; // Define el paquete al que pertenece esta clase
 
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
+import com.universidad.dto.MateriaDTO;
 import com.universidad.model.Materia;
 import com.universidad.model.Estudiante;
 import com.universidad.service.IEstudianteService; // Importa la interfaz IEstudianteService del paquete service
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.*; // Importa las anotaciones de 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List; // Importa la interfaz List para manejar listas
+import java.util.stream.Collectors;
 
 @RestController // Anotación que indica que esta clase es un controlador REST de Spring
 @RequestMapping("/api/estudiantes") // Define la ruta base para las solicitudes HTTP a este controlador
@@ -29,6 +32,18 @@ public class EstudianteController { // Define la clase EstudianteController
     @Autowired // Anotación que indica que el constructor debe ser usado para inyección de dependencias
     public EstudianteController(IEstudianteService estudianteService) { // Constructor que recibe el servicio de estudiantes
         this.estudianteService = estudianteService; // Asigna el servicio de estudiantes a la variable de instancia
+    }
+    @GetMapping("/busqueda")
+    public ResponseEntity<List<EstudianteDTO>> buscarEstudiantesPorNombre(
+            @RequestParam String nombre) {
+        List<EstudianteDTO> estudiantes = estudianteService.buscarEstudiantesPorNombre(nombre);
+        return ResponseEntity.ok(estudiantes);
+    }
+
+    @GetMapping("/ordenados-por-apellido")
+    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantesOrdenadosPorApellido() {
+        List<EstudianteDTO> estudiantes = estudianteService.obtenerEstudiantesOrdenadosPorApellido();
+        return ResponseEntity.ok(estudiantes);
     }
 
     @GetMapping // Anotación que indica que este método maneja solicitudes GET
@@ -76,10 +91,15 @@ public class EstudianteController { // Define la clase EstudianteController
 
     @PutMapping("/{id}") // Anotación que indica que este método maneja solicitudes PUT con un parámetro de ruta
     @Transactional // Anotación que indica que este método debe ejecutarse dentro de una transacción
+<<<<<<< HEAD
+    @ResponseStatus(HttpStatus.OK) // Anotación que indica que la respuesta HTTP debe tener un estado 200 OK
+    public ResponseEntity<EstudianteDTO> actualizarEstudiante(@PathVariable Long id, @RequestBody EstudianteDTO estudianteDTO) { // Método para actualizar un estudiante existente
+=======
     @ResponseStatus(HttpStatus.OK) // Anotación que indica que la respuesta HTTP debe tener un estado 200 OK    
     public ResponseEntity<EstudianteDTO> actualizarEstudiante(
         @PathVariable Long id,
         @RequestBody EstudianteDTO estudianteDTO) { // Método para actualizar un estudiante existente
+>>>>>>> main
         EstudianteDTO estudianteActualizado = estudianteService.actualizarEstudiante(id, estudianteDTO); // Llama al servicio para actualizar el estudiante
         return ResponseEntity.ok(estudianteActualizado); // Retorna una respuesta HTTP 200 OK con el estudiante actualizado
     }
@@ -98,6 +118,49 @@ public class EstudianteController { // Define la clase EstudianteController
     public ResponseEntity<List<EstudianteDTO>> obtenerEstudianteActivo() { // Método para obtener una lista de estudiantes activos
         List<EstudianteDTO> estudiantesActivos = estudianteService.obtenerEstudianteActivo(); // Llama al servicio para obtener los estudiantes activos
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
+    }
+
+    @GetMapping("/por-curso/{materiaId}")
+    public ResponseEntity<?> obtenerEstudiantesPorCurso(
+            @PathVariable Long materiaId) {
+        try {
+            List<EstudianteDTO> estudiantes = estudianteService.obtenerEstudiantesPorCurso(materiaId);
+            if (estudiantes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No hay estudiantes inscritos en este curso");
+            }
+            return ResponseEntity.ok(estudiantes);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
+    // En EstudianteController.java
+    @GetMapping("/{estudianteId}/cursos")
+    public ResponseEntity<?> obtenerCursosPorEstudianteId(@PathVariable Long estudianteId) {
+        try {
+            List<Materia> materias = estudianteService.obtenerCursosPorEstudianteId(estudianteId);
+
+            if (materias.isEmpty()) {
+                // Cambiamos a 200 OK con un mensaje en el body
+                return ResponseEntity.ok()
+                        .body(Collections.singletonMap("mensaje", "El estudiante no está inscrito en ningún curso"));
+            }
+
+            List<MateriaDTO> materiasDTO = materias.stream()
+                    .map(m -> MateriaDTO.builder()
+                            .id(m.getId())
+                            .nombreMateria(m.getNombreMateria())
+                            .codigoUnico(m.getCodigoUnico())
+                            .creditos(m.getCreditos())
+                            .build())
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(materiasDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", e.getMessage()));
+        }
     }
 
 }

@@ -3,15 +3,17 @@ package com.universidad.service; // Define el paquete al que pertenece esta inte
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
 import com.universidad.model.Estudiante;
 import com.universidad.model.Materia;
-
+import com.universidad.dto.EstudianteDTO;
+import com.universidad.model.Materia;
+import java.util.List;
 import java.util.List; // Importa la interfaz List para manejar listas
 
 public interface IEstudianteService { // Define la interfaz IEstudianteService
-    
+
     /**
      * Obtiene todos los estudiantes.
      * @return Lista de EstudianteDTO.
-     */  
+     */
     List<EstudianteDTO> obtenerTodosLosEstudiantes(); // Método para obtener una lista de todos los EstudianteDTO
 
     /**
@@ -21,7 +23,7 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      */
     List<EstudianteDTO> obtenerEstudianteActivo(); // Método para obtener una lista de EstudianteDTO activos
 
-    
+
     /**
      * Obtiene un estudiante por su número de inscripción.
      * @param numeroInscripcion
@@ -36,14 +38,14 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      */
     public List<Materia> obtenerMateriasDeEstudiante(Long estudianteId); // Método para obtener las materias de un estudiante por su ID
 
-    
+
     /**
      * Crea un nuevo estudiante.
      * @param estudianteDTO DTO del estudiante a crear.
      * @return EstudianteDTO creado.
      */
     EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO); // Método para crear un nuevo estudiante
-    
+
     /**
      * Actualiza un estudiante existente.
      * @param id ID del estudiante a actualizar.
@@ -58,6 +60,29 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      * Elimina un estudiante por su ID.
      * @param id ID del estudiante a eliminar.
      */
+<<<<<<< HEAD
+
+    EstudianteDTO eliminarEstudiante(Long id, EstudianteDTO estudianteDTO);
+    List<EstudianteDTO> buscarEstudiantesPorNombre(String nombre);
+    List<EstudianteDTO> obtenerEstudiantesOrdenadosPorApellido();
+
+    /**
+     * Obtiene estudiantes por ID de materia (curso).
+     * @param materiaId ID de la materia (curso).
+     * @return Lista de EstudianteDTO inscritos en el curso.
+     * @throws RuntimeException si no se encuentra la materia.
+     */
+    List<EstudianteDTO> obtenerEstudiantesPorCurso(Long materiaId);
+
+    /**
+     * Obtiene las materias (cursos) de un estudiante por su ID
+     * @param estudianteId ID del estudiante
+     * @return Lista de materias del estudiante
+     * @throws RuntimeException si el estudiante no existe
+     */
+    List<Materia> obtenerCursosPorEstudianteId(Long estudianteId);
+
+=======
     EstudianteDTO eliminarEstudiante(Long id, EstudianteDTO estudianteDTO); // Método para eliminar (de manera logica) un estudiante por su ID
 
     /**
@@ -67,4 +92,5 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      * @return
      */
     Estudiante obtenerEstudianteConBloqueo(Long id); // Método para obtener un estudiante por su ID con bloqueo pesimista
+>>>>>>> main
 }
