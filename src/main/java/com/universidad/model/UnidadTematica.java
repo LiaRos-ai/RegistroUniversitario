@@ -18,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "unidad_tematica") 
 public class UnidadTematica {
 
+    
     /**
      * Identificador único de la unidad temática.
      */

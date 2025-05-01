@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+
 @Getter // Genera un getter para todos los campos de la clase
 @Setter // Genera un setter para todos los campos de la clase
 //@Data

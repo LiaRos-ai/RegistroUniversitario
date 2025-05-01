@@ -8,3 +8,4 @@ import java.util.List;
 public interface EvaluacionDocenteRepository extends JpaRepository<EvaluacionDocente, Long> {
     List<EvaluacionDocente> findByDocente(Docente docente);
 }
+

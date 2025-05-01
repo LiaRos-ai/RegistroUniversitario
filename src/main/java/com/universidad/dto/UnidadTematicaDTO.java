@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UnidadTematicaDTO {
 
+    
     /**
      * Identificador único de la unidad temática.
      */

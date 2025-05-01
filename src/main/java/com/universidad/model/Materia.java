@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Getter // Genera un getter para todos los campos de la clase

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Lock;
 import jakarta.persistence.LockModeType;
 import java.util.Optional;
 
+
 @Repository // Anotación que indica que esta clase es un repositorio de Spring
 public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
     // No es necesario implementar métodos básicos como findAll, ya que JpaRepository los proporciona automáticamente.

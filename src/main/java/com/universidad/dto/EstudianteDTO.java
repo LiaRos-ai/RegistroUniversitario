@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 import jakarta.validation.constraints.*;
 
+
 /**
  * DTO que representa los datos de un estudiante para transferencia entre capas.
  * Incluye validaciones para los campos principales y datos de inscripción, estado y fechas.
