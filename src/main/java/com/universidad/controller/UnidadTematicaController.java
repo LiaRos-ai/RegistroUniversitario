@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 /**
  * Controlador REST para operaciones relacionadas con Unidades Temáticas.
  */
