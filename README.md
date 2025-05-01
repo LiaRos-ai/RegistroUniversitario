@@ -1,44 +1,106 @@
-# Uso de Optional en Java (Activida #4)
-## Integrantes:
-- Aaron Oswaldo Nina Calzada
-- Genesis Jalid Tapia Cortez
-- Carlos Manuel Miranda Aguirre
+# Relaciones y Cascadas con JPA (Activida #5)
 
-Nota: Los tres integrantes colaboraron en todo el desarrollo del proyecto, incluyendo Parte 1: Investigación y Parte 2: Implementación Técnica de optional
+Nota: *Todos los integrantes colaboraron en la actividad :* 
+Parte 1: Relaciones y Cascadas con JPA 
+Parte 2: Actualización en Cascada (CascadeType.ALL)
 
-## ¿Qué es Optional en Java? ¿Por qué se recomienda su uso?
-Optional<T> es una clase contenedora que puede almacenar un valor del tipo T o estar vacío. Se utiliza para representar valores que pueden o no estar presentes, evitando el uso explícito de null. Se recomienda su uso porque:
-- Reduce errores como el NullPointerException.
-- Hace el código más legible y seguro.
-- Obliga al programador a considerar la ausencia de valores.
+## 📚 Gestión de Unidades Temáticas por Materia
 
-## ¿Cuál es la diferencia entre Optional.empty(), Optional.of() y Optional.ofNullable()?
-- Optional.empty(): Crea un Optional sin valor, es decir, vacío.
-- Optional.of(value): Crea un Optional con un valor *no nulo*. Si el valor es null, lanza NullPointerException.
-- Optional.ofNullable(value): Crea un Optional que puede contener un valor o estar vacío si el valor es null.
+### 🧩 Parte 1: Nuevas Entidades y Funcionalidades
 
-## ¿Qué ventajas tiene Optional frente a regresar null?
-- Elimina la necesidad de verificaciones explícitas de null.
-- Hace evidente en la firma del método que un valor puede estar ausente.
-- Facilita un estilo funcional de programación con métodos como map(), filter(), orElse(), etc.
-- Mejora la mantenibilidad y reduce errores de tiempo de ejecución.
+#### ✅ Entidad añadida: UnidadTematica.java
+- Campos:
+    - id
+    - nombre
+    - descripcion
+- Relaciones:
+    - @ManyToOne hacia Materia
+    - Anotación: @JsonBackReference
 
-## ¿Cómo se integra Optional en Spring Data JPA?
-Spring Data JPA permite retornar Optional en los métodos de repositorio. Por ejemplo:
+#### 🔧 Entidad modificada: Materia.java
 java
-Optional<User> findById(Long id);
+@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL)
+@JsonManagedReference
+private List<UnidadTematica> unidades;
 
-Esto indica claramente que el resultado puede no existir, evitando tener que manejar manualmente valores null.
 
-## ¿Qué método de Optional permite lanzar una excepción si no hay resultado?
-orElseThrow()
+#### 📦 DTOs
+- *Nuevo:* UnidadTematicaDTO.java con campos:
+    - id
+    - nombre
+    - descripcion
+- *Modificado:* MateriaDTO.java
+  java
+  private List<UnidadTematicaDTO> unidades;
 
-Este método lanza una excepción si el Optional está vacío. Puede usarse así:
+
+#### 🗃 Repositorio: UnidadTematicaRepository.java
 java
-User user = optionalUser.orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+List<UnidadTematica> findByMateriaId(Long materiaId);
 
 
-## ¿Por qué es útil Optional en el contexto de una API REST?
-En una API REST, muchas veces se consultan recursos que pueden no existir. Optional ayuda a manejar estos casos limpiamente, por ejemplo, retornando un 404 Not Found si un recurso no está presente. Además:
-- Mejora la claridad del código.
-- Permite escribir controladores más concisos y seguros.
+#### 🧠 Servicio
+
+- **Interfaz (IMateriaService.java)**
+  java
+  List<UnidadTematicaDTO> obtenerUnidadesPorMateria(Long materiaId);
+
+
+- **Implementación (MateriaServiceImpl.java)**
+    - Método nuevo:
+      java
+      public List<UnidadTematicaDTO> obtenerUnidadesPorMateria(Long materiaId) { ... }
+
+    - Método modificado:
+      java
+      private MateriaDTO mapToDTO(Materia materia) { ... }
+
+      → se añade .unidades(...)
+    - Método nuevo:
+      java
+      private UnidadTematicaDTO mapToDTO(UnidadTematica unidad) { ... }
+
+
+#### 🌐 Controlador: MateriaController.java
+- Endpoint nuevo:
+  java
+  @GetMapping("/{id}/unidades")
+  public ResponseEntity<List<UnidadTematicaDTO>> listarUnidades(@PathVariable Long id) { ... }
+
+- Endpoint extra:
+  java
+  @GetMapping("/con-unidades")
+  public ResponseEntity<List<MateriaDTO>> obtenerTodasConUnidades() { ... }
+
+
+---
+
+### 🛠 Parte 2: Mejoras en Persistencia y Eliminación
+
+#### 🔁 Modificación en Materia.java
+java
+private List<UnidadTematica> unidades = new ArrayList<>();
+
+@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+@JsonManagedReference
+
+
+#### 🧹 Reemplazo de unidades sin romper referencia
+Método en MateriaServiceImpl.java:
+java
+public void reemplazarUnidadesDeMateria(Long materiaId, List<UnidadTematicaDTO> nuevasUnidades) { ... }
+
+Cambio aplicado:
+java
+materia.getUnidades().clear();
+materia.getUnidades().add(...);
+
+Esto evita el uso de setUnidades(...) y permite que orphanRemoval = true elimine correctamente las unidades huérfanas.
+
+---
+
+### ✅ Beneficios
+- Soporte completo para listar, obtener y reemplazar unidades temáticas de cada materia.
+- Relaciones JSON gestionadas adecuadamente con @JsonManagedReference y @JsonBackReference.
+- Eliminación automática de unidades al actualizar la lista.
+- Mejora en la integridad de la persistencia con orphanRemoval = true.

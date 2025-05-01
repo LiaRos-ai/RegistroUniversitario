@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -20,4 +22,10 @@ public class Docente extends Persona {
 
     @Column(name = "departamento", nullable = false) // Columna no nula
     private String departamento;
-}    
+
+    /**
+     * Lista de evaluaciones asociadas al docente.
+     */
+    @OneToMany(mappedBy = "docente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EvaluacionDocente> evaluaciones; // Lista de evaluaciones asociadas al docente
+}
