@@ -14,7 +14,7 @@
 
 ## Cambios y Creaciones Realizadas
 
-### 1. Creación de la Entidad `UnidadTematica` <span style="color:pink;">(Realizado por Fernandez Adriana)</span>
+### 1. Creación de la Entidad `UnidadTematica` (Realizado por Fernandez Adriana)
 Se desarrolló la clase `UnidadTematica.java` con los siguientes campos:
 - `id`
 - `titulo`
@@ -22,6 +22,7 @@ Se desarrolló la clase `UnidadTematica.java` con los siguientes campos:
 - Relación con la entidad `Materia` mediante `@ManyToOne`.
 
 Además, se utilizó la anotación `@JsonBackReference` para evitar ciclos de serialización.
+
 ```java
 @Entity
 @Data
