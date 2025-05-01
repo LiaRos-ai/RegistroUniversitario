@@ -5,6 +5,7 @@ import com.universidad.model.Estudiante;
 import com.universidad.model.Materia;
 
 import java.util.List; // Importa la interfaz List para manejar listas
+import java.util.Optional;
 
 public interface IEstudianteService { // Define la interfaz IEstudianteService
     
@@ -67,4 +68,6 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      * @return
      */
     Estudiante obtenerEstudianteConBloqueo(Long id); // Método para obtener un estudiante por su ID con bloqueo pesimista
+
+    Optional<List<Materia>> obtenerMateriasDeEstudianteOptional(Long estudianteId);
 }
