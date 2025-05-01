@@ -61,8 +61,7 @@ public interface IEstudianteService { // Define la interfaz IEstudianteService
      */
     EstudianteDTO eliminarEstudiante(Long id, EstudianteDTO estudianteDTO); // Método para eliminar (de manera logica) un estudiante por su ID
 
-    List<Materia> obtenerMateriasDeEstudiante(Long estudianteId);
-    Optional<List<Materia>> obtenerMateriasDeEstudianteOptional(Long estudianteId);
+
 
 
 
