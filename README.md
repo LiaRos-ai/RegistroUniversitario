@@ -50,11 +50,8 @@ public class UnidadTematica {
 Se incorporó la siguiente lista de unidades temáticas:  
 Esta relación permite vincular múltiples unidades temáticas a una sola materia.
 
-```java
+![imagen](imagenesReadme/2.png)
 
-@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
-private List<UnidadTematica> unidades = new ArrayList<>();
-```
 
 ### 3. Creación de los DTOs (Realizado por Fernandez Adriana)
 Se añadieron los siguientes DTOs:  
@@ -64,11 +61,8 @@ MateriaDTO.java: se amplió para incluir el campo:
 
 private List<UnidadTematicaDTO> unidadesTematicas;
 
-
-
-
-
-
+![imagen](imagenesReadme/3.png)
+![imagen](imagenesReadme/4.png)
 
 ### 4. Creación del Repositorio `UnidadTematicaRepository` (Realizado por Picavia Julio Erick)
 
