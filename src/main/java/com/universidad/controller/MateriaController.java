@@ -4,8 +4,12 @@ import com.universidad.model.Materia;
 import com.universidad.service.IMateriaService;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 import com.universidad.dto.MateriaDTO;
+import com.universidad.dto.UnidadDTO;
+import com.universidad.dto.UnidadesUpdateDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,4 +100,35 @@ public class MateriaController {
         }
         return ResponseEntity.ok(circulo);
     }
+
+    @GetMapping("/{id}/unidades")
+    public ResponseEntity<List<UnidadDTO>> obtenerUnidadesDeMateria(@PathVariable Long id) {
+        MateriaDTO materia = materiaService.obtenerMateriaPorId(id);
+        if (materia == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(materia.getUnidades());
+    }
+
+    // Extra: Listar todas las materias con sus unidades
+    @GetMapping("/con-unidades")
+    public ResponseEntity<List<MateriaDTO>> obtenerTodasLasMateriasConUnidades() {
+        List<MateriaDTO> materias = materiaService.obtenerTodasLasMaterias();
+        return ResponseEntity.ok(materias);
+    }
+
+    @PutMapping("/{id}/unidades")
+@Transactional
+public ResponseEntity<MateriaDTO> actualizarUnidadesDeMateria(
+        @PathVariable Long id,
+        @Valid @RequestBody UnidadesUpdateDTO unidadesUpdateDTO) {
+    
+    MateriaDTO materiaActualizada = materiaService.actualizarUnidadesDeMateria(id, unidadesUpdateDTO.getUnidades());
+    
+    if (materiaActualizada == null) {
+        return ResponseEntity.notFound().build();
+    }
+    
+    return ResponseEntity.ok(materiaActualizada);
+}
 }
