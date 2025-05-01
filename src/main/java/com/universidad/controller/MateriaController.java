@@ -1,5 +1,6 @@
 package com.universidad.controller;
 
+
 import com.universidad.dto.UnidadTematicaDTO;
 import com.universidad.dto.UnidadesUpdateDTO;
 import com.universidad.model.Materia;
@@ -13,6 +14,14 @@ import jakarta.transaction.Transactional;
 
 import com.universidad.dto.MateriaDTO;
 import jakarta.validation.Valid;
+
+import com.universidad.model.Materia;
+import com.universidad.service.IMateriaService;
+
+import jakarta.transaction.Transactional;
+
+import com.universidad.dto.MateriaDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +29,15 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/materias")
@@ -37,8 +50,11 @@ public class MateriaController {
     public MateriaController(IMateriaService materiaService) {
         this.materiaService = materiaService;
     }
+
     @Autowired
     private MateriaRepository materiaRepository;
+
+
 
     @GetMapping
     public ResponseEntity<List<MateriaDTO>> obtenerTodasLasMaterias() {
@@ -109,6 +125,7 @@ public class MateriaController {
         }
         return ResponseEntity.ok(circulo);
     }
+
     // En tu MateriaController.java, agrega este método:
 
     @GetMapping("/{id}/unidades")
@@ -185,4 +202,6 @@ public class MateriaController {
             }
         }
     }
+
+
 }

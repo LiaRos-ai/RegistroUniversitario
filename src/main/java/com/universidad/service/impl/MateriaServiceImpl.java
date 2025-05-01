@@ -1,11 +1,11 @@
 package com.universidad.service.impl;
 
 import com.universidad.dto.UnidadTematicaDTO;
+import com.universidad.dto.MateriaDTO;
 import com.universidad.model.Materia;
 import com.universidad.model.UnidadTematica;
 import com.universidad.repository.MateriaRepository;
 import com.universidad.service.IMateriaService;
-import com.universidad.dto.MateriaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -23,9 +23,11 @@ public class MateriaServiceImpl implements IMateriaService {
     private MateriaRepository materiaRepository;
 
     // Método utilitario para mapear Materia a MateriaDTO
+
     // En tu MateriaServiceImpl.java, actualiza el mapToDTO:
 
     public MateriaDTO mapToDTO(Materia materia) {
+
         if (materia == null) return null;
         return MateriaDTO.builder()
                 .id(materia.getId())
