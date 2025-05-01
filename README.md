@@ -121,6 +121,7 @@ Para garantizar la carga de relaciones `Lazy`, se utilizó la anotación `@Trans
 `@Transactional`  
 `public List<MateriaDTO> listarMateriasConUnidades() { ... }`
 
+![imagen](imagenesReadme/9.png)
 
 
 
@@ -136,6 +137,7 @@ Se incluyó el siguiente endpoint para listar todas las materias junto con sus u
 
 
 
+![imagen](imagenesReadme/10.png)
 
 
 
@@ -150,6 +152,7 @@ Se agregó el endpoint para listar las unidades temáticas asociadas a una mater
 `}`
 
 
+![imagen](imagenesReadme/11.png)
 
 
 
@@ -160,6 +163,7 @@ Se cumplió con el requerimiento adicional de listar todas las materias con sus 
 
 `GET /api/materias/con-unidades`
 
+![imagen](imagenesReadme/12.png)
 
 
 ## Parte 2: Actualización en Cascada (`CascadeType.ALL`)
@@ -185,9 +189,7 @@ MateriaDTO reemplazarUnidadesTematicas(Long id, List<UnidadTematicaDTO> nuevasUn
 
 La relación `OneToMany` ya estaba definida correctamente así:
 
-`@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)`  
-
-
+![imagen](imagenesReadme/14.png)
 
 
 
@@ -203,12 +205,14 @@ En `MateriaServiceImpl.java` se creó el método `reemplazarUnidadesTematicas(..
 - Guarda la materia en cascada.  
 - Usa `.distinct()` para evitar duplicados.
 
+![imagen](imagenesReadme/15.png)
 
 
 
 
 Creamos el endpoint en el controlador MateriaController.java:
 
+![imagen](imagenesReadme/16.png)
 
 
 
@@ -219,3 +223,4 @@ Se probó el endpoint `PUT /materias/1/unidades` enviando una nueva lista de uni
 La solicitud reemplazó correctamente las unidades anteriores por las nuevas (ejemplo: Trigonometría y Álgebra Lineal).  
 
 El resultado fue exitoso (`200 OK`), validando el uso de `cascade = ALL` y `orphanRemoval = true`.
+![imagen](imagenesReadme/17.png)
