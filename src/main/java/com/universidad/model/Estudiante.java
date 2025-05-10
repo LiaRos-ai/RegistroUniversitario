@@ -15,7 +15,7 @@ import jakarta.persistence.*; // Importa las anotaciones de JPA para la persiste
 
 @Getter // Genera un getter para todos los campos de la clase
 @Setter // Genera un setter para todos los campos de la clase
-//@Data // Genera getters, setters, toString, equals y hashCode
+@Data // Genera getters, setters, toString, equals y hashCode
 @EqualsAndHashCode(callSuper = true) // Genera métodos equals y hashCode, incluyendo los campos de la clase padre
 @NoArgsConstructor // Genera un constructor sin argumentos
 @AllArgsConstructor // Genera un constructor con todos los argumentos

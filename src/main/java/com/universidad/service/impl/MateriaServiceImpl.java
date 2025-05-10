@@ -1,16 +1,22 @@
 package com.universidad.service.impl;
 
 import com.universidad.model.Materia;
+import com.universidad.model.UnidadTematica;
 import com.universidad.repository.MateriaRepository;
 import com.universidad.service.IMateriaService;
 import com.universidad.dto.MateriaDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,5 +89,42 @@ public class MateriaServiceImpl implements IMateriaService {
     @CacheEvict(value = {"materia", "materias"}, allEntries = true)
     public void eliminarMateria(Long id) {
         materiaRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Materia buscarMateriaPorId(Long id) {
+        return materiaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Materia no encontrada con ID: " + id));
+    }
+
+    @Override
+    @Transactional
+    public List<Materia> listarMateriasConUnidades() {
+        return materiaRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void reemplazarUnidadesTematicas(Long idMateria, List<UnidadTematica> nuevasUnidades) {
+        // Validar que no existan títulos duplicados
+        Set<String> titulosUnicos = new HashSet<>();
+        for (UnidadTematica unidad : nuevasUnidades) {
+            String titulo = unidad.getTitulo().trim().toLowerCase();
+            if (!titulosUnicos.add(titulo)) {
+                throw new IllegalArgumentException("Título duplicado: '" + unidad.getTitulo() + "'");
+            }
+        }
+        
+        Materia materia = buscarMateriaPorId(idMateria);
+
+        materia.getUnidadesTematicas().clear();
+
+        for (UnidadTematica unidad : nuevasUnidades) {
+            unidad.setMateria(materia);
+            materia.getUnidadesTematicas().add(unidad);
+        }
+
+        materiaRepository.save(materia);
     }
 }
