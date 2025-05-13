@@ -1,6 +1,8 @@
 package com.universidad.controller;
 
 import com.universidad.model.Materia;
+import com.universidad.model.UnidadTematica;
+import com.universidad.repository.UnidadTematicaRepository;
 import com.universidad.service.IMateriaService;
 
 import jakarta.transaction.Transactional;
@@ -96,4 +98,41 @@ public class MateriaController {
         }
         return ResponseEntity.ok(circulo);
     }
+    @Autowired
+    private UnidadTematicaRepository unidadTematicaRepository;
+
+    @GetMapping("/{id}/unidades")
+    public ResponseEntity<List<UnidadTematica>> obtenerUnidadesPorMateria(@PathVariable Long id) {
+        List<UnidadTematica> unidades = unidadTematicaRepository.findByMateriaId(id);
+        return ResponseEntity.ok(unidades);
+    }
+    @PutMapping("/{id}/unidades")
+    @Transactional
+    public ResponseEntity<?> reemplazarUnidadesTematicas(
+            @PathVariable Long id,
+            @RequestBody List<UnidadTematica> nuevasUnidades) {
+
+        Materia materia = materiaService.obtenerEntidadPorId(id);
+        if (materia == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Elimina las unidades actuales (por orphanRemoval = true)
+        materia.getUnidadesTematicas().clear();
+
+        // Agrega las nuevas unidades, evitando duplicados por nombre (extra)
+        for (UnidadTematica nueva : nuevasUnidades) {
+            boolean existe = materia.getUnidadesTematicas().stream()
+                    .anyMatch(u -> u.getTitulo().equalsIgnoreCase(nueva.getTitulo()));
+            if (!existe) {
+                nueva.setMateria(materia); // Relación bidireccional
+                materia.getUnidadesTematicas().add(nueva);
+            }
+        }
+
+        materiaService.guardarMateria(materia); // Método que hace save() en el repositorio
+
+        return ResponseEntity.ok("Unidades reemplazadas correctamente.");
+    }
+
 }

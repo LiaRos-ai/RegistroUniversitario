@@ -10,5 +10,7 @@ public interface IMateriaService {
     MateriaDTO obtenerMateriaPorCodigoUnico(String codigoUnico);
     MateriaDTO crearMateria(MateriaDTO materia);
     MateriaDTO actualizarMateria(Long id, MateriaDTO materia);
+    Materia obtenerEntidadPorId(Long id);
+    void guardarMateria(Materia materia);
     void eliminarMateria(Long id);
 }
