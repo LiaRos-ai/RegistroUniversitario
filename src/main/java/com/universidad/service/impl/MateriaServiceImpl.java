@@ -4,11 +4,21 @@ import com.universidad.model.Materia;
 import com.universidad.repository.MateriaRepository;
 import com.universidad.service.IMateriaService;
 import com.universidad.dto.MateriaDTO;
+<<<<<<< HEAD
+import com.universidad.dto.UnidadTematicaDTO;
+import com.universidad.model.UnidadTematica;
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+<<<<<<< HEAD
+import org.springframework.transaction.annotation.Transactional;
+
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,4 +94,73 @@ public class MateriaServiceImpl implements IMateriaService {
     public void eliminarMateria(Long id) {
         materiaRepository.deleteById(id);
     }
+<<<<<<< HEAD
+
+   // TAREA GRUPO
+   @Override
+   @Transactional
+   public List<MateriaDTO> listarMateriasConUnidades() {
+       return materiaRepository.findAll().stream().map(materia -> {
+           MateriaDTO dto = MateriaDTO.builder()
+                   .id(materia.getId())
+                   .nombreMateria(materia.getNombreMateria())
+                   .codigoUnico(materia.getCodigoUnico())
+                   .creditos(materia.getCreditos())
+                   .prerequisitos(materia.getPrerequisitos() != null ?
+                           materia.getPrerequisitos().stream().map(Materia::getId).collect(java.util.stream.Collectors.toList()) : null)
+                   .esPrerequisitoDe(materia.getEsPrerequisitoDe() != null ?
+                           materia.getEsPrerequisitoDe().stream().map(Materia::getId).collect(java.util.stream.Collectors.toList()) : null)
+                   .unidadesTematicas(materia.getUnidades() != null ?
+                           materia.getUnidades().stream().map(unidad ->
+                                   com.universidad.dto.UnidadTematicaDTO.builder()
+                                           .id(unidad.getId())
+                                           .titulo(unidad.getTitulo())
+                                           .descripcion(unidad.getDescripcion())
+                                           .build()
+                           ).collect(java.util.stream.Collectors.toList()) : null)
+                   .build();
+           return dto;
+       }).collect(java.util.stream.Collectors.toList());
+   }
+
+    //PARTE 2 , anadimos la funcion  reemplazarUnidadesTematicas
+    @Override
+    @Transactional
+    public MateriaDTO reemplazarUnidadesTematicas(Long id, List<UnidadTematicaDTO> nuevasUnidades) {
+        Materia materia = materiaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Materia no encontrada"));
+
+        // Elimina las unidades temáticas actuales
+        materia.getUnidades().clear();
+        // Anade nuevas unidades evitando duplicados
+        for (UnidadTematicaDTO dto : nuevasUnidades.stream().distinct().toList()) {
+            UnidadTematica unidad = new UnidadTematica();
+            unidad.setTitulo(dto.getTitulo());
+            unidad.setDescripcion(dto.getDescripcion());
+            unidad.setMateria(materia); // Establece la relación inversa
+            materia.getUnidades().add(unidad);
+        }
+        materia = materiaRepository.save(materia);
+        // Convertir la entidad actualizada a DTO
+        List<UnidadTematicaDTO> unidadesDTO = materia.getUnidades().stream()
+                .map(u -> UnidadTematicaDTO.builder()
+                        .id(u.getId())
+                        .titulo(u.getTitulo())
+                        .descripcion(u.getDescripcion())
+                        .build())
+                .collect(Collectors.toList());
+        return MateriaDTO.builder()
+                .id(materia.getId())
+                .nombreMateria(materia.getNombreMateria())
+                .codigoUnico(materia.getCodigoUnico())
+                .creditos(materia.getCreditos())
+                .unidadesTematicas(unidadesDTO)
+                .build();
+    }
+
+
+
+
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 }
