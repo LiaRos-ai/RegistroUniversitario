@@ -1,5 +1,6 @@
 package com.universidad.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -67,6 +68,26 @@ public class Materia implements Serializable {
      */
     @ManyToMany(mappedBy = "prerequisitos")
     private List<Materia> esPrerequisitoDe;
+
+    /**
+     * Insercion de cirujano para este modelo :'v
+     */
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<UnidadTematica> unidades;
+
+
+
+
+
+
+
+    /**
+     * //////////////////////////////////////////
+     */
+
+
+
 
     /**
      * Verifica si agregar la materia con el ID dado como prerequisito formaría un ciclo.

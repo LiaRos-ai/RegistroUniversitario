@@ -1,6 +1,7 @@
 package com.universidad.controller;
 
 import com.universidad.model.Materia;
+import com.universidad.model.UnidadTematica;
 import com.universidad.service.IMateriaService;
 
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/materias")
@@ -96,4 +98,28 @@ public class MateriaController {
         }
         return ResponseEntity.ok(circulo);
     }
+    @GetMapping("/{idMateria}/unidades")
+    public List<UnidadTematica> obtenerUnidadesPorMateria(@PathVariable Long idMateria) {
+        return materiaService.obtenerUnidadesPorMateria(idMateria);
+    }
+
+    @GetMapping("/unidadesAll")
+    public List<Materia> obtenerUnidadesDeMaterias(){
+        return materiaService.obtenerMateriasConUnidades();
+    }
+
+
+    @PutMapping("/actualizar/{id}/unidades")
+    public ResponseEntity<?> actualizarUnidadesTematicas(
+            @PathVariable Long id,
+            @RequestBody List<UnidadTematica> nuevasUnidades) {
+        try {
+            materiaService.reemplazarUnidades(id, nuevasUnidades);
+            return ResponseEntity.ok("Unidades temáticas actualizadas correctamente.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 }
