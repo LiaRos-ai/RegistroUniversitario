@@ -13,10 +13,17 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/materias")
+@Tag(name = "Materias", description = "Operaciones CRUD y consulta de materias")
 public class MateriaController {
 
     private final IMateriaService materiaService;
@@ -27,6 +34,8 @@ public class MateriaController {
         this.materiaService = materiaService;
     }
 
+    @Operation(summary = "Obtener todas las materias", description = "Devuelve la lista de todas las materias registradas.")
+    @ApiResponse(responseCode = "200", description = "Lista de materias")
     @GetMapping
     public ResponseEntity<List<MateriaDTO>> obtenerTodasLasMaterias() {
         long inicio = System.currentTimeMillis();
@@ -37,8 +46,14 @@ public class MateriaController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation(summary = "Obtener materia por ID", description = "Devuelve una materia por su ID.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Materia encontrada"),
+        @ApiResponse(responseCode = "404", description = "Materia no encontrada")
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<MateriaDTO> obtenerMateriaPorId(@PathVariable Long id) {
+    public ResponseEntity<MateriaDTO> obtenerMateriaPorId(
+            @Parameter(description = "ID de la materia", example = "1") @PathVariable Long id) {
         long inicio = System.currentTimeMillis();
         logger.info("[MATERIA] Inicio obtenerMateriaPorId: {}", inicio);
         MateriaDTO materia = materiaService.obtenerMateriaPorId(id);
@@ -50,8 +65,14 @@ public class MateriaController {
         return ResponseEntity.ok(materia);
     }
 
+    @Operation(summary = "Obtener materia por código único", description = "Devuelve una materia por su código único.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Materia encontrada"),
+        @ApiResponse(responseCode = "404", description = "Materia no encontrada")
+    })
     @GetMapping("/codigo/{codigoUnico}")
-    public ResponseEntity<MateriaDTO> obtenerMateriaPorCodigoUnico(@PathVariable String codigoUnico) {
+    public ResponseEntity<MateriaDTO> obtenerMateriaPorCodigoUnico(
+            @Parameter(description = "Código único de la materia", example = "MAT101") @PathVariable String codigoUnico) {
         MateriaDTO materia = materiaService.obtenerMateriaPorCodigoUnico(codigoUnico);
         if (materia == null) {
             return ResponseEntity.notFound().build();
@@ -59,6 +80,8 @@ public class MateriaController {
         return ResponseEntity.ok(materia);
     }
 
+    @Operation(summary = "Crear materia", description = "Crea una nueva materia.")
+    @ApiResponse(responseCode = "201", description = "Materia creada")
     @PostMapping
     public ResponseEntity<MateriaDTO> crearMateria(@RequestBody MateriaDTO materia) {
         //MateriaDTO materiaDTO = new MateriaDTO(materia.getId(), materia.getNombre(), materia.getCodigoUnico());
@@ -66,23 +89,43 @@ public class MateriaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
     }
 
+    @Operation(summary = "Actualizar materia", description = "Actualiza los datos de una materia existente.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Materia actualizada"),
+        @ApiResponse(responseCode = "404", description = "Materia no encontrada")
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<MateriaDTO> actualizarMateria(@PathVariable Long id, @RequestBody MateriaDTO materia) {
+    public ResponseEntity<MateriaDTO> actualizarMateria(
+            @Parameter(description = "ID de la materia", example = "1") @PathVariable Long id,
+            @RequestBody MateriaDTO materia) {
         //MateriaDTO materiaDTO = new MateriaDTO(materia.getId(), materia.getNombreMateria(), materia.getCodigoUnico());
         MateriaDTO actualizadaDTO = materiaService.actualizarMateria(id, materia);
         //Materia actualizada = new Materia(actualizadaDTO.getId(), actualizadaDTO.getNombre(), actualizadaDTO.getCodigoUnico());
         return ResponseEntity.ok(actualizadaDTO);
     }
 
+    @Operation(summary = "Eliminar materia", description = "Elimina una materia por su ID.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Materia eliminada"),
+        @ApiResponse(responseCode = "404", description = "Materia no encontrada")
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarMateria(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarMateria(
+            @Parameter(description = "ID de la materia", example = "1") @PathVariable Long id) {
         materiaService.eliminarMateria(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/formaria-circulo/{materiaId}/{prerequisitoId}") // Endpoint para verificar si una materia formaría un círculo con un prerequisito
-    @Transactional // Anotación que indica que este método debe ejecutarse dentro de una transacción
-    public ResponseEntity<Boolean> formariaCirculo(@PathVariable Long materiaId, @PathVariable Long prerequisitoId) {
+    @Operation(summary = "Verificar círculo de prerequisitos", description = "Verifica si agregar un prerequisito formaría un círculo en la materia.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "No forma círculo"),
+        @ApiResponse(responseCode = "400", description = "Formaría círculo o materia no encontrada")
+    })
+    @GetMapping("/formaria-circulo/{materiaId}/{prerequisitoId}")
+    @Transactional
+    public ResponseEntity<Boolean> formariaCirculo(
+            @Parameter(description = "ID de la materia", example = "1") @PathVariable Long materiaId,
+            @Parameter(description = "ID del prerequisito", example = "2") @PathVariable Long prerequisitoId) {
         MateriaDTO materiaDTO = materiaService.obtenerMateriaPorId(materiaId); // Obtiene la materia por su ID
         if (materiaDTO == null) { // Verifica si la materia existe
             return ResponseEntity.notFound().build();

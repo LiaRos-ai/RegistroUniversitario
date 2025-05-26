@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired; // Importa la anotación Autowired de Spring
 import org.springframework.http.ResponseEntity; // Importa la clase ResponseEntity de Spring para manejar respuestas HTTP
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.http.HttpStatus; // Importa la clase HttpStatus de Spring para manejar códigos de estado HTTP
 import org.springframework.web.bind.annotation.*; // Importa las anotaciones de Spring para controladores web
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List; // Importa la interfaz List para manejar listas
 
 @RestController // Anotación que indica que esta clase es un controlador REST de Spring
+@CrossOrigin(origins = "http://localhost:5500") // Permite solicitudes CORS desde el origen especificado
 @RequestMapping("/api/estudiantes") // Define la ruta base para las solicitudes HTTP a este controlador
 @Validated
 public class EstudianteController { // Define la clase EstudianteController
@@ -31,6 +33,8 @@ public class EstudianteController { // Define la clase EstudianteController
         this.estudianteService = estudianteService; // Asigna el servicio de estudiantes a la variable de instancia
     }
 
+    @CrossOrigin(origins = "http://localhost:5500", 
+                methods = {RequestMethod.GET, RequestMethod.POST}) // Permite solicitudes CORS desde el origen especificado para los métodos GET y POST
     @GetMapping // Anotación que indica que este método maneja solicitudes GET
     public ResponseEntity<List<EstudianteDTO>> obtenerTodosLosEstudiantes() { // Método para obtener una lista de todos los EstudianteDTO
         long inicio = System.currentTimeMillis();

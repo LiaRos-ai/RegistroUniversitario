@@ -28,4 +28,15 @@ public class Docente extends Persona {
      */
     @OneToMany(mappedBy = "docente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EvaluacionDocente> evaluaciones; // Lista de evaluaciones asociadas al docente
+
+    /**
+     * Lista de materias asignadas al docente.
+     */
+    @ManyToMany
+    @JoinTable(
+        name = "docente_materia",
+        joinColumns = @JoinColumn(name = "docente_id"),
+        inverseJoinColumns = @JoinColumn(name = "materia_id")
+    )
+    private List<Materia> materias;
 }
