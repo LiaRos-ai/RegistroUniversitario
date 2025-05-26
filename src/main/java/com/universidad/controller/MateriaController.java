@@ -6,6 +6,10 @@ import com.universidad.service.IMateriaService;
 import jakarta.transaction.Transactional;
 
 import com.universidad.dto.MateriaDTO;
+<<<<<<< HEAD
+import com.universidad.dto.UnidadTematicaDTO;
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -139,4 +143,27 @@ public class MateriaController {
         }
         return ResponseEntity.ok(circulo);
     }
+<<<<<<< HEAD
+
+    // TAREA GRUPO
+    /**
+     * Endpoint adicional para listar materias con sus unidades temáticas
+     */
+    @GetMapping("/con-unidades")
+    public List<MateriaDTO> listarMateriasConUnidades() {
+        return materiaService.listarMateriasConUnidades();
+    }
+
+
+    //PARTE 2
+    @PutMapping("/{id}/unidades")
+    public ResponseEntity<MateriaDTO> reemplazarUnidadesTematicas(
+            @PathVariable Long id,
+            @RequestBody List<UnidadTematicaDTO> nuevasUnidades) {
+        MateriaDTO actualizada = materiaService.reemplazarUnidadesTematicas(id, nuevasUnidades);
+        return ResponseEntity.ok(actualizada);
+    }
+
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 }

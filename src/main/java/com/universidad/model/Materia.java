@@ -10,6 +10,11 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
+<<<<<<< HEAD
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 @Getter // Genera un getter para todos los campos de la clase
 @Setter // Genera un setter para todos los campos de la clase
 @NoArgsConstructor
@@ -67,7 +72,10 @@ public class Materia implements Serializable {
      */
     @ManyToMany(mappedBy = "prerequisitos")
     private List<Materia> esPrerequisitoDe;
+<<<<<<< HEAD
+=======
 
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
     /**
      * Verifica si agregar la materia con el ID dado como prerequisito formaría un ciclo.
      * @param prerequisitoId ID de la materia candidata a prerequisito
@@ -76,7 +84,10 @@ public class Materia implements Serializable {
     public boolean formariaCirculo(Long prerequisitoId) {
         return formariaCirculoRecursivo(this.getId(), prerequisitoId, new java.util.HashSet<>());
     }
+<<<<<<< HEAD
+=======
 
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
     // Método auxiliar recursivo para detectar ciclos
     private boolean formariaCirculoRecursivo(Long objetivoId, Long actualId, java.util.Set<Long> visitados) {
         if (objetivoId == null || actualId == null) return false;
@@ -99,4 +110,14 @@ public class Materia implements Serializable {
         return false;
     }
 
+<<<<<<< HEAD
+    //--------------------- tarea -----------------------------
+    //Parte 2
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<UnidadTematica> unidades;
+
+
+=======
+>>>>>>> e9e36e5ae9530c3f8ada58a470f45ab7dee40de3
 }
