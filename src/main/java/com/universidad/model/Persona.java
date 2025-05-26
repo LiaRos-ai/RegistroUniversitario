@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import javax.validation.constraints.Email;
 
 @Getter // Genera un getter para todos los campos de la clase
 @Setter // Genera un setter para todos los campos de la clase
@@ -46,6 +47,7 @@ public abstract class Persona {
 
     @Column(nullable = false, unique = true) // Columna no nula y con valor único
     @Basic(optional = false) // Columna no nula
+    @Email // Validación de correo electrónico
     private String email;
 
     @Column(name = "fecha_nacimiento", nullable = false) // Columna no nula con nombre personalizado
