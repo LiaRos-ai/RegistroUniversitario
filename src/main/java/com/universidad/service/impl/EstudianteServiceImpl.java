@@ -32,6 +32,14 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
         this.estudianteValidator = estudianteValidator;
     }
 
+    public EstudianteServiceImpl(EstudianteRepository estudianteRepository) {
+        this.estudianteRepository = estudianteRepository;
+    }
+
+    public EstudianteServiceImpl() {
+        // Constructor vacío requerido por Spring
+    }
+
     /*public EstudianteServiceImpl(EstudianteRepository estudianteRepository) {
             this.estudianteRepository = estudianteRepository;
     }*/
@@ -128,6 +136,20 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
             try { Thread.sleep(15000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
         // Simula un tiempo de procesamiento prolongado
         return est;
+    }
+
+    public EstudianteDTO obtenerEstudiantePorId(long id) {
+        return estudianteRepository.findById(id)
+                .map(estudiante -> EstudianteDTO.builder()
+                        .id(estudiante.getId())
+                        .nombre(estudiante.getNombre())
+                        .apellido(estudiante.getApellido())
+                        .email(estudiante.getEmail())
+                        .fechaNacimiento(estudiante.getFechaNacimiento())
+                        .numeroInscripcion(estudiante.getNumeroInscripcion())
+                        // Agrega otros campos si es necesario
+                        .build())
+                .orElse(null);
     }
 
     // Método auxiliar para convertir entidad a DTO
