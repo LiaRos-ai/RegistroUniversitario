@@ -5,13 +5,14 @@ import java.time.LocalDate;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import javax.validation.constraints.Email;
+
 
 @Getter // Genera un getter para todos los campos de la clase
 @Setter // Genera un setter para todos los campos de la clase
