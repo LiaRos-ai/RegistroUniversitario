@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List; // Importa la interfaz List para manejar listas
+import java.util.Optional;
 
 @RestController // Anotación que indica que esta clase es un controlador REST de Spring
 @CrossOrigin(origins = "http://localhost:5500") // Permite solicitudes CORS desde el origen especificado
@@ -103,5 +104,18 @@ public class EstudianteController { // Define la clase EstudianteController
         List<EstudianteDTO> estudiantesActivos = estudianteService.obtenerEstudianteActivo(); // Llama al servicio para obtener los estudiantes activos
         return ResponseEntity.ok(estudiantesActivos); // Retorna una respuesta HTTP 200 OK con la lista de estudiantes activos
     }
+
+    @GetMapping("/{id}/materias-optional")
+    public ResponseEntity<?> obtenerMateriasDeEstudianteOptional(@PathVariable Long id) {
+        Optional<List<Materia>> materiasOptional = estudianteService.obtenerMateriasDeEstudianteOptional(id);
+
+        if (materiasOptional.isPresent()) {
+            return ResponseEntity.ok(materiasOptional.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Estudiante no encontrado o no tiene materias");
+        }
+    }
+
 
 }

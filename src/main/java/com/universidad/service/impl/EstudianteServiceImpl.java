@@ -1,6 +1,7 @@
 package com.universidad.service.impl; // Define el paquete al que pertenece esta clase
 
 import com.universidad.dto.EstudianteDTO; // Importa la clase EstudianteDTO del paquete dto
+import com.universidad.dto.MateriaDTO;
 import com.universidad.model.Estudiante; // Importa la clase Estudiante del paquete model
 import com.universidad.model.Materia;
 import com.universidad.repository.EstudianteRepository; // Importa la clase EstudianteRepository del paquete repository
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List; // Importa la interfaz List para manejar listas
+import java.util.Optional;
 import java.util.stream.Collectors; // Importa la clase Collectors para manejar colecciones
 
 @Service // Anotación que indica que esta clase es un servicio de Spring
@@ -190,4 +192,14 @@ public class EstudianteServiceImpl implements IEstudianteService { // Define la 
                 .motivoBaja(estudianteDTO.getMotivoBaja()) // Asigna el motivo de baja (puede ser null si no se desea mostrar)
                 .build(); // Construye el objeto Estudiante
     }
+    // Inyección de dependencia existente...
+
+    @Override
+    public Optional<List<Materia>> obtenerMateriasDeEstudianteOptional(Long estudianteId) {
+        return estudianteRepository.findById(estudianteId)
+                .map(Estudiante::getMaterias)
+                .filter(materias -> !materias.isEmpty()); // opcional: evita retornar listas vacías
+    }
+
+
 }
